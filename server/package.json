@@ -1,0 +1,52 @@
+{
+  "name": "onboardio-api",
+  "version": "1.0.0",
+  "description": "REST API, written in TypeScript, serving from MongoDB",
+  "main": "server.js",
+  "scripts": {
+    "prettier": "prettier --write '**/*.ts'",
+    "dev": "npx ts-node ./api/server.ts",
+    "start": "node ./dist/server.js",
+    "postinstall": "npm run tsc",
+    "tsc": "tsc"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MLH-Fellowship/onboardio.git"
+  },
+  "keywords": [
+    "rest",
+    "api",
+    "typescript",
+    "mongodb",
+    "express"
+  ],
+  "author": "Team 3",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MLH-Fellowship/onboardio/issues"
+  },
+  "homepage": "https://github.com/MLH-Fellowship/onboardio#readme",
+  "dependencies": {
+    "@sendgrid/mail": "^7.2.6",
+    "@types/express": "^4.17.8",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-body-cleaner": "^1.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.10.6",
+    "typescript": "^4.0.3"
+  },
+  "devDependencies": {
+    "husky": "^4.3.0",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.1.2",
+    "pretty-quick": "^3.0.2"
+  }
+}
