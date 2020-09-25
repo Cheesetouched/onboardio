@@ -10,6 +10,7 @@ import "./App.css";
 
 import ThemeToggler from "./components/ThemeToggler";
 import LoginForm from "./pages/LoginForm";
+import Integrate from "./pages/Integrate";
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
       <ColorModeProvider>
         <CSSReset />
         <ThemeToggler />
-        <LoginForm />
+        <Integrate />
+        {/* <LoginForm /> */}
       </ColorModeProvider>
     </ThemeProvider>
   );
