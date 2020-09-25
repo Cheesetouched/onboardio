@@ -14,7 +14,6 @@ import ErrorMessage from "../components/ErrorMessage";
 import { MultiSelect } from "../components/MultiSelect";
 
 const CreateFlow = (props) => {
-  console.log(props);
   const [state, setState] = useState({
     flowName: "",
     selectedServices: [],
