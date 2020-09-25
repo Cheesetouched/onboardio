@@ -1,6 +1,6 @@
 import React from "react";
-import { Link as ReactLink, Redirect } from "react-router-dom";
-import { Box, Heading, Flex, Button, Link } from "@chakra-ui/core";
+import { Link as ReactLink } from "react-router-dom";
+import { Box, Heading, Flex, Button, Link, Text } from "@chakra-ui/core";
 import ThemeToggler from "./ThemeToggler";
 
 const Navbar = (props) => {
@@ -36,17 +36,24 @@ const Navbar = (props) => {
         justifyContent="flex-end"
         flexGrow={1}
       >
-        <Link as={ReactLink} to="/" mr={6} style={{ textDecoration: "none" }}>
+        <Link
+          as={ReactLink}
+          to="/"
+          mr={6}
+          style={{ textDecoration: "none" }}
+          fontSize="lg"
+        >
           <span role="img" aria-label="onboard">
             💻{" "}
           </span>
-          Dashboard
+          <span ml={10}>Dashboard</span>
         </Link>
         <Link
           as={ReactLink}
           to="/connect"
           mr={6}
           style={{ textDecoration: "none" }}
+          fontSize="lg"
         >
           <span role="img" aria-label="onboard">
             🔌{" "}

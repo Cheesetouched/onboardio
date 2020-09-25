@@ -27,6 +27,7 @@ const Dashboard = () => {
           <Button
             m={5}
             mt={4}
+            p={6}
             type="submit"
             variantColor="teal"
             variant="outline"
@@ -38,6 +39,7 @@ const Dashboard = () => {
           <Button
             m={5}
             mt={4}
+            p={6}
             type="submit"
             variantColor="teal"
             variant="outline"
