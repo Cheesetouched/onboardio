@@ -1,5 +1,5 @@
 import React from "react";
-import { Link as ReactLink } from "react-router-dom";
+import { Link as ReactLink, Redirect } from "react-router-dom";
 import { Box, Heading, Flex, Button, Link } from "@chakra-ui/core";
 import ThemeToggler from "./ThemeToggler";
 
@@ -7,6 +7,9 @@ const Navbar = (props) => {
   let { cta } = props;
   // Temporary Value
   cta = "Sign Out";
+  const signOut = () => {
+    alert("Sign Out!");
+  };
   return (
     <Flex
       as="nav"
@@ -51,10 +54,28 @@ const Navbar = (props) => {
         align="center"
         justifyContent="space-between"
       >
-        <Button bg="transparent" border="1px" mr={6}>
-          {/* Sign out here depending on what the CTA says */}
-          {cta}
-        </Button>
+        {cta === "Sign Out" ? (
+          <Button
+            bg="transparent"
+            border="1px"
+            mr={6}
+            onClick={() => (cta === "Sign Out" ? signOut() : null)}
+          >
+            {/* Sign out here depending on what the CTA says */}
+            {cta}
+          </Button>
+        ) : (
+          <Button
+            bg="transparent"
+            border="1px"
+            mr={6}
+            as={ReactLink}
+            to="/auth"
+          >
+            {/* Sign out here depending on what the CTA says */}
+            {cta}
+          </Button>
+        )}
       </Flex>
       <ThemeToggler />
     </Flex>
