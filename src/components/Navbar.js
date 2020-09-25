@@ -1,4 +1,5 @@
 import React from "react";
+import { Link as ReactLink } from "react-router-dom";
 import { Box, Heading, Flex, Button, Link } from "@chakra-ui/core";
 import ThemeToggler from "./ThemeToggler";
 
@@ -18,7 +19,7 @@ const Navbar = (props) => {
       {...props}
     >
       <Flex align="center" mr={5}>
-        <Heading as="h1" size="lg" fontFamily="Raleway">
+        <Heading as={ReactLink} to="/" size="lg" fontFamily="Raleway">
           <span role="img" aria-label="onboard">
             🚀
           </span>
@@ -32,8 +33,17 @@ const Navbar = (props) => {
         justifyContent="flex-end"
         flexGrow={1}
       >
-        <Link mr={6}>Dashboard</Link>
-        <Link mr={6}>Connect</Link>
+        <Link as={ReactLink} to="/" mr={6} style={{ textDecoration: "none" }}>
+          Dashboard
+        </Link>
+        <Link
+          as={ReactLink}
+          to="/connect"
+          mr={6}
+          style={{ textDecoration: "none" }}
+        >
+          Connect
+        </Link>
       </Box>
 
       <Flex
@@ -42,6 +52,7 @@ const Navbar = (props) => {
         justifyContent="space-between"
       >
         <Button bg="transparent" border="1px" mr={6}>
+          {/* Sign out here depending on what the CTA says */}
           {cta}
         </Button>
       </Flex>
