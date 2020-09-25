@@ -13,10 +13,10 @@ export class AuthController {
 
     return AuthService.loginUser(email, password)
       .then((userToken) => {
-        return res.send({ status: "LOGGED_IN", token: userToken });
+        return res.send({ status: "LOGGED_IN", message: userToken });
       })
       .catch((err) => {
-        return res.send({ status: "FAILED_TO_LOG_IN", reason: err.message });
+        return res.send({ status: "FAILED_TO_LOG_IN", message: err.message });
       });
   }
 
