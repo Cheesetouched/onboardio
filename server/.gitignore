@@ -65,3 +65,6 @@ typings/
 
 # vscode
 settings.json
+
+.idea/
+dist/
