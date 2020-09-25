@@ -15,6 +15,8 @@ import Integrate from "./pages/Integrate";
 import Dashboard from "./pages/Dashboard";
 
 import Navbar from "./components/Navbar";
+import CreateFlow from "./pages/CreateFlow";
+import UseFlow from "./pages/UseFlow";
 
 function App({ currentUser = false }) {
   return (
@@ -24,6 +26,8 @@ function App({ currentUser = false }) {
         <Navbar />
         <Switch>
           <Route exact path="/" component={Dashboard} />
+          <Route exact path="/flow/create" component={CreateFlow} />
+          <Route exact path="/flow/use" component={UseFlow} />
           <Route
             exact
             path="/auth"
