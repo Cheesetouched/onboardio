@@ -16,6 +16,8 @@ const Integrate = () => {
   const {
     REACT_APP_GITHUB_CLIENT_ID,
     REACT_APP_DISCORD_CLIENT_ID,
+    REACT_APP_HEROKU_CLIENT_ID,
+    REACT_APP_ANTI_FORGERY,
   } = process.env;
   return (
     <Flex
@@ -36,7 +38,11 @@ const Integrate = () => {
         url={`https://discord.com/api/oauth2/authorize?client_id=${REACT_APP_DISCORD_CLIENT_ID}&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fdiscord-auth&response_type=code&scope=guilds%20guilds.join%20identify%20email`}
       />
       <IntegrationCard text={SiTrello} active={d} />
-      <IntegrationCard text={SiHeroku} active={e} />
+      <IntegrationCard
+        text={SiHeroku}
+        active={e}
+        url={`https://id.heroku.com/oauth/authorize?client_id=${REACT_APP_HEROKU_CLIENT_ID}&response_type=code&scope=global&state=${REACT_APP_ANTI_FORGERY}`}
+      />
     </Flex>
   );
 };
