@@ -54,6 +54,7 @@ const Navbar = (props) => {
         align="center"
         justifyContent="space-between"
       >
+        {/* Sign out here depending on what the CTA says */}
         {cta === "Sign Out" ? (
           <Button
             bg="transparent"
@@ -61,7 +62,6 @@ const Navbar = (props) => {
             mr={6}
             onClick={() => (cta === "Sign Out" ? signOut() : null)}
           >
-            {/* Sign out here depending on what the CTA says */}
             {cta}
           </Button>
         ) : (
@@ -72,7 +72,6 @@ const Navbar = (props) => {
             as={ReactLink}
             to="/auth"
           >
-            {/* Sign out here depending on what the CTA says */}
             {cta}
           </Button>
         )}
