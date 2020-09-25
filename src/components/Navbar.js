@@ -60,7 +60,7 @@ const Navbar = (props) => {
             bg="transparent"
             border="1px"
             mr={6}
-            onClick={() => (cta === "Sign Out" ? signOut() : null)}
+            onClick={() => signOut()}
           >
             {cta}
           </Button>
