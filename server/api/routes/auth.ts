@@ -4,6 +4,7 @@ export class AuthRoutes {
   public auth: AuthController = new AuthController();
 
   public routes(app): void {
-    app.route("/").get(this.auth.welcome);
+    app.route("/login").post(this.auth.login);
+    app.route("/register").post(this.auth.register);
   }
 }
