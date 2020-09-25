@@ -49,6 +49,7 @@ const LoginForm = () => {
         borderWidth={1}
         borderRadius={8}
         boxShadow="lg"
+        mt={10}
       >
         {signUp ? <SignUpSection {...props} /> : <SignInSection {...props} />}
       </Box>
