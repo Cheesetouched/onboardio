@@ -37,6 +37,9 @@ const Navbar = (props) => {
         flexGrow={1}
       >
         <Link as={ReactLink} to="/" mr={6} style={{ textDecoration: "none" }}>
+          <span role="img" aria-label="onboard">
+            💻{" "}
+          </span>
           Dashboard
         </Link>
         <Link
@@ -45,6 +48,9 @@ const Navbar = (props) => {
           mr={6}
           style={{ textDecoration: "none" }}
         >
+          <span role="img" aria-label="onboard">
+            🔌{" "}
+          </span>
           Connect
         </Link>
       </Box>

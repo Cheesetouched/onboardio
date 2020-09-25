@@ -12,6 +12,8 @@ import "./App.css";
 
 import LoginForm from "./pages/LoginForm";
 import Integrate from "./pages/Integrate";
+import Dashboard from "./pages/Dashboard";
+
 import Navbar from "./components/Navbar";
 
 function App({ currentUser = false }) {
@@ -21,7 +23,7 @@ function App({ currentUser = false }) {
         <CSSReset />
         <Navbar />
         <Switch>
-          <Route exact path="/" render={() => <p>Dashboard</p>} />
+          <Route exact path="/" component={Dashboard} />
           <Route
             exact
             path="/auth"
