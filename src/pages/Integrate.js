@@ -47,7 +47,6 @@ const IntegrationCard = ({ text, active, color = null }) => (
         type="submit"
         variantColor={active ? "green" : "teal"}
         variant={active ? "solid" : "outline"}
-        isDisabled={active}
       >
         {active ? "Connected" : "Connect"}
       </Button>
