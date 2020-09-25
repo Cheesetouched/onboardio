@@ -13,7 +13,10 @@ const Integrate = () => {
     e: false,
   });
   const { a, b, c, d, e } = state;
-
+  const {
+    REACT_APP_GITHUB_CLIENT_ID,
+    REACT_APP_DISCORD_CLIENT_ID,
+  } = process.env;
   return (
     <Flex
       width="full"
@@ -21,16 +24,24 @@ const Integrate = () => {
       justifyContent="center"
       direction="column"
     >
-      <IntegrationCard text={GoLogoGithub} active={a} />
+      <IntegrationCard
+        text={GoLogoGithub}
+        active={a}
+        url={`https://github.com/login/oauth/authorize?scope=admin:org&client_id=${REACT_APP_GITHUB_CLIENT_ID}`}
+      />
       <IntegrationCard text={DiMongodb} active={b} />
-      <IntegrationCard text={SiDiscord} active={c} />
+      <IntegrationCard
+        text={SiDiscord}
+        active={c}
+        url={`https://discord.com/api/oauth2/authorize?client_id=${REACT_APP_DISCORD_CLIENT_ID}&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fdiscord-auth&response_type=code&scope=guilds%20guilds.join%20identify%20email`}
+      />
       <IntegrationCard text={SiTrello} active={d} />
       <IntegrationCard text={SiHeroku} active={e} />
     </Flex>
   );
 };
 
-const IntegrationCard = ({ text, active, color = null }) => (
+const IntegrationCard = ({ text, active, color = null, url }) => (
   <Box
     p={4}
     m={3}
@@ -42,14 +53,16 @@ const IntegrationCard = ({ text, active, color = null }) => (
   >
     <Flex align="center" justifyContent="space-between">
       <Box as={text} size="64px" color={color} />
-      <Button
-        mt={4}
-        type="submit"
-        variantColor={active ? "green" : "teal"}
-        variant={active ? "solid" : "outline"}
-      >
-        {active ? "Connected" : "Connect"}
-      </Button>
+      <a href={url}>
+        <Button
+          mt={4}
+          type="submit"
+          variantColor={active ? "green" : "teal"}
+          variant={active ? "solid" : "outline"}
+        >
+          {active ? "Connected" : "Connect"}
+        </Button>
+      </a>
     </Flex>
   </Box>
 );
