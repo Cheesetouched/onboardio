@@ -13,7 +13,7 @@ export class AuthController {
 
     return AuthService.loginUser(email, password)
       .then((userToken) => {
-        return res.send({ status: "LOGGED_IN", message: userToken });
+        return res.send({ status: "LOGGED_IN", token: userToken });
       })
       .catch((err) => {
         return res.send({ status: "FAILED_TO_LOG_IN", message: err.message });
@@ -28,7 +28,7 @@ export class AuthController {
         return res.send({ status: "USER_REGISTERED", token: userToken });
       })
       .catch((err) => {
-        return res.send({ status: "FAILED_TO_REGISTER", reason: err.message });
+        return res.send({ status: "FAILED_TO_REGISTER", message: err.message });
       });
   }
 }
