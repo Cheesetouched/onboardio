@@ -71,6 +71,7 @@ const Navbar = (props) => {
         {cta === "Sign Out" ? (
           <Button
             bg="transparent"
+            variant="outline"
             border="1px"
             mr={6}
             onClick={() => signOut()}
@@ -80,6 +81,7 @@ const Navbar = (props) => {
         ) : (
           <Button
             bg="transparent"
+            variant="outline"
             border="1px"
             mr={6}
             as={ReactLink}
