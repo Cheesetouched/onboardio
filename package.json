@@ -2,6 +2,9 @@
   "name": "onboardio",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "server"
+  ],
   "dependencies": {
     "@chakra-ui/core": "^0.8.0",
     "@emotion/core": "^10.0.35",
@@ -21,6 +24,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:server": "yarn workspace server dev",
+    "start:app": "yarn start:server & yarn start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

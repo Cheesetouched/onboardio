@@ -1,5 +1,5 @@
 {
-  "name": "onboardio-api",
+  "name": "server",
   "version": "1.0.0",
   "description": "REST API, written in TypeScript, serving from MongoDB",
   "main": "server.js",
