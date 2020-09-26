@@ -103,7 +103,7 @@ const Onboard = (props) => {
               </FormControl>
               <FormControl isRequired>
                 <FormLabel mt={4} mb={2}>
-                  Email addresses to send invite
+                  Email addresses
                 </FormLabel>
                 <CreatableMultiValueInput
                   onChange={handleEmailAddressChange}
