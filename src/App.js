@@ -16,6 +16,7 @@ import Dashboard from "./pages/Dashboard";
 
 import Navbar from "./components/Navbar";
 import CreateFlow from "./pages/CreateFlow";
+import Onboard from "./pages/Onboard";
 
 function App({ currentUser = false }) {
   return (
@@ -26,6 +27,7 @@ function App({ currentUser = false }) {
         <Switch>
           <Route exact path="/" component={Dashboard} />
           <Route exact path="/flow/create" component={CreateFlow} />
+          <Route exact path="/onboard" component={Onboard} />
           <Route
             exact
             path="/auth"
