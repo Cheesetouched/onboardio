@@ -33,7 +33,7 @@ function App({ currentUser = false }) {
           <Route
             exact
             path="/auth"
-            children={() => (currentUser ? <Redirect to="/" /> : <LoginForm />)}
+            render={() => (currentUser ? <Redirect to="/" /> : <LoginForm />)}
           />
           <Route exact path="/athr/:service" component={CodeHandler} />
         </Switch>
