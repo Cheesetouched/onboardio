@@ -35,7 +35,7 @@ function App({ currentUser = false }) {
             path="/auth"
             render={() => (currentUser ? <Redirect to="/" /> : <LoginForm />)}
           />
-          <Route exact path="/athr/:service" component={CodeHandler} />
+          <Route exact path="/authorize/:service" component={CodeHandler} />
         </Switch>
       </ColorModeProvider>
     </ThemeProvider>

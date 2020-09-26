@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, useParams } from "react-router";
-import { Flex, Box, Button, Heading, Spinner } from "@chakra-ui/core";
-import { Link as ReactLink } from "react-router-dom";
+import { Flex, Spinner } from "@chakra-ui/core";
 
 import ErrorMessage from "../components/ErrorMessage";
 
 import { sendCode } from "../utils/query";
+import { getQueryParams } from "../utils/url";
 
 const CodeHandler = () => {
   const [state, setState] = useState({
@@ -13,16 +13,7 @@ const CodeHandler = () => {
     isLoading: true,
   });
   const { service } = useParams();
-  const getQueryParams = () =>
-    window.location.search
-      .replace("?", "")
-      .split("&")
-      .reduce(
-        (r, e) => (
-          (r[e.split("=")[0]] = decodeURIComponent(e.split("=")[1])), r
-        ),
-        {}
-      );
+
   const { code } = getQueryParams();
   //Dummy JWT token
   const token = "ada214142zxczcz213124241";
