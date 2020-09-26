@@ -5,19 +5,23 @@ import * as mongoose from "mongoose";
 import * as bodyParser from "body-parser";
 import * as bodyCleaner from "express-body-cleaner";
 import { AuthRoutes } from "./routes/auth";
+import { ServiceRoutes } from "./routes/service";
 import { RequestLogger } from "./middlewares/requestLogger";
 
 class App {
   public app: express.Application;
   public mongourl: string;
   public auth: AuthRoutes = new AuthRoutes();
+  public service: ServiceRoutes = new ServiceRoutes();
   public authRouter: express.Router = express.Router();
+  public serviceRouter: express.Router = express.Router();
 
   constructor() {
     dotenv.config({ path: path.join(__dirname, "../") + ".env" });
     this.app = express();
     this.config();
     this.auth.routes(this.authRouter);
+    this.service.routes(this.serviceRouter);
     this.mongoSetup();
   }
 
@@ -27,6 +31,7 @@ class App {
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: false }));
     this.app.use("/v1/auth", this.authRouter);
+    this.app.use("/v1/services", this.serviceRouter);
   }
 
   private mongoSetup(): void {
