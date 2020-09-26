@@ -40,4 +40,25 @@ export class ServiceService {
         });
     });
   }
+
+  static linkHeroku(code: string) {
+    return new Promise((resolve, reject) => {
+      const params = new URLSearchParams();
+      params.append("grant_type", "authorization_code");
+      params.append("client_secret", process.env.HEROKU_OAUTH_SECRET);
+      params.append("code", code);
+
+      fetch(process.env.HEROKU_OAUTH_ACCESS_TOKEN_URL, {
+        method: "post",
+        body: params,
+        headers: { Accept: "application/json" },
+      })
+        .then((res) => res.json())
+        .then((response) => {
+          if (response.error)
+            reject({ code: 500, message: response.error_description });
+          else resolve(response.access_token);
+        });
+    });
+  }
 }
