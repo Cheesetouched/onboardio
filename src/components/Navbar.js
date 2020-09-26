@@ -22,7 +22,7 @@ const Navbar = (props) => {
       {...props}
     >
       <Flex align="center" mr={5}>
-        <Heading as={ReactLink} to="/" size="lg" fontFamily="Raleway">
+        <Heading as={ReactLink} to="/" size="lg" fontFamily="Didact Gothic">
           <span role="img" aria-label="onboard">
             🚀
           </span>
