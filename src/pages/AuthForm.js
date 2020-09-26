@@ -4,9 +4,11 @@ import {Flex, Box} from "@chakra-ui/core";
 import SignUpSection from "../components/SignUp";
 import SignInSection from "../components/SignIn";
 import {loginUser, registerUser} from "../services/auth";
-import {isEmailValid} from "../utils/email";
+import {setUserAuthState} from "../redux/actions/auth";
+import {withRouter} from "react-router-dom";
+import {store} from "../redux/store";
 
-const LoginForm = () => {
+const AuthForm = ({history}) => {
     const [state, setState] = useState({
         email: "",
         password: "",
@@ -25,7 +27,7 @@ const LoginForm = () => {
                 const {status, token, message} = res;
                 if (status === "USER_REGISTERED") {
                     setState({...state, error: null});
-                    alert("User Registered ", token);
+                    history.push(`/connect`);
                 } else {
                     setState({...state, error: message});
                 }
@@ -41,7 +43,7 @@ const LoginForm = () => {
 
             if (status === "LOGGED_IN") {
                 setState({...state, error: null});
-                alert("User Logged in ", token);
+                history.push(`/`);
             } else {
                 setState({...state, error: message});
             }
@@ -92,4 +94,4 @@ const LoginForm = () => {
     );
 };
 
-export default LoginForm;
+export default withRouter(AuthForm);

@@ -10,7 +10,7 @@ import {
 
 import "./App.css";
 
-import LoginForm from "./pages/LoginForm";
+import AuthForm from "./pages/AuthForm";
 import Integrate from "./pages/Integrate";
 import Dashboard from "./pages/Dashboard";
 
@@ -18,24 +18,32 @@ import Navbar from "./components/Navbar";
 import CreateFlow from "./pages/CreateFlow";
 import Onboard from "./pages/Onboard";
 import CodeHandler from "./pages/CodeHandler";
+import {setUserAuthState} from "./redux/actions/auth";
+import AuthorizedRoute from "./components/AuthorizedRoute";
+import {store} from "./redux/store";
+import {useSelector} from "react-redux";
+import {checkIfUserLoggedIn} from "./redux/stateUtils/user";
 
 function App({ currentUser = false }) {
+  const isLoggedIn = useSelector(checkIfUserLoggedIn);
+
   return (
     <ThemeProvider theme={theme}>
       <ColorModeProvider>
         <CSSReset />
         <Navbar />
         <Switch>
-          <Route exact path="/" component={Dashboard} />
-          <Route exact path="/connect" component={Integrate} />
-          <Route exact path="/flow/create" component={CreateFlow} />
-          <Route exact path="/onboard" component={Onboard} />
+          <AuthorizedRoute exact path="/" component={Dashboard} />
+          <AuthorizedRoute exact path="/connect" component={Integrate} />
+          <AuthorizedRoute exact path="/flow/create" component={CreateFlow} />
+          <AuthorizedRoute exact path="/onboard" component={Onboard} />
+          <AuthorizedRoute exact path="/authorize/:service" component={CodeHandler} />
+
           <Route
             exact
             path="/auth"
-            render={() => (currentUser ? <Redirect to="/" /> : <LoginForm />)}
+            render={() => (isLoggedIn ? <Redirect to="/" /> : <AuthForm />)}
           />
-          <Route exact path="/authorize/:service" component={CodeHandler} />
         </Switch>
       </ColorModeProvider>
     </ThemeProvider>
