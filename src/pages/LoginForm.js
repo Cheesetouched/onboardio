@@ -3,6 +3,7 @@ import { Flex, Box } from "@chakra-ui/core";
 
 import SignUpSection from "../components/SignUp";
 import SignInSection from "../components/SignIn";
+import {loginUser} from "../services/auth";
 
 const LoginForm = () => {
   const [state, setState] = useState({
@@ -21,7 +22,16 @@ const LoginForm = () => {
       setState({ ...state, error: "Passwords don't match!" });
     } else {
       setState({ ...state, error: null });
-      alert(`Email: ${email} & Password: ${password}`);
+
+      loginUser(email, password).then(res=> {
+        const {status, token} = res;
+        if(status === "LOGGED_IN"){
+          alert(token);
+        }
+        alert("Sent request");
+      }).catch((err)=>{
+        console.error(err);
+      });
     }
   };
 
