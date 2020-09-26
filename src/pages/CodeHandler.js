@@ -4,7 +4,7 @@ import { Flex, Spinner } from "@chakra-ui/core";
 
 import ErrorMessage from "../components/ErrorMessage";
 
-import { sendCode } from "../utils/query";
+import { sendCode } from "../services/query";
 import { getQueryParams } from "../utils/url";
 
 const CodeHandler = () => {
