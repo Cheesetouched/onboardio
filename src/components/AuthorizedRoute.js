@@ -20,4 +20,4 @@ const AuthorizedRoute = ({ component: Component, ...rest }) => {
     )
 }
 
-export default AuthorizedRoute
+export default AuthorizedRoute;
