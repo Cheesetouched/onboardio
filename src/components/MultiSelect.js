@@ -10,7 +10,7 @@ const MultiSelect = (props) => {
     if (colorMode === "light") {
       return isSelected ? "#2D3958" : "#2D3958";
     } else {
-      return isSelected ? "#fff" : "#fff";
+      return isSelected ? "#eeeeee" : "#eeeeee";
     }
   };
 
@@ -26,10 +26,15 @@ const MultiSelect = (props) => {
     control: (provided, state) => ({
       ...provided,
       backgroundColor: isDarkMode ? "#272d38" : "#f2f2f2",
+      color: isDarkMode ? "#eeeeee" : provided.color,
       border: "none",
       padding: "4px",
       outline: "none",
       paddingRight: "0.25rem",
+    }),
+    input: (provided, state) => ({
+      ...provided,
+      color: isDarkMode ? "#eeeeee" : provided.color,
     }),
     container: (provided, state) => ({
       position: "relative",
