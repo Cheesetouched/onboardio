@@ -4,13 +4,13 @@ import { SiGithub, SiDiscord, SiHeroku, SiZoom, SiAsana } from "react-icons/si";
 
 const Integrate = () => {
   const [state, setState] = useState({
-    a: false,
-    b: true,
-    c: false,
-    d: false,
-    e: false,
+    github: false,
+    zoom: true,
+    discord: false,
+    asana: false,
+    heroku: false,
   });
-  const { a, b, c, d, e } = state;
+  const { github, zoom, discord, asana, heroku } = state;
   const {
     REACT_APP_GITHUB_CLIENT_ID,
     REACT_APP_DISCORD_CLIENT_ID,
@@ -28,31 +28,31 @@ const Integrate = () => {
     >
       <IntegrationCard
         text={SiGithub}
-        active={a}
+        active={github}
         label="Github"
         url={`https://github.com/login/oauth/authorize?scope=admin:org&client_id=${REACT_APP_GITHUB_CLIENT_ID}`}
       />
       <IntegrationCard
         text={SiZoom}
-        active={b}
+        active={zoom}
         label="Zoom"
         url={`https://zoom.us/oauth/authorize?response_type=code&client_id=${REACT_APP_ZOOM_CLIENT_ID}&redirect_uri=http://localhost:3000/athr/zoom`}
       />
       <IntegrationCard
         text={SiDiscord}
-        active={c}
+        active={discord}
         label="Discord"
         url={`https://discord.com/api/oauth2/authorize?client_id=${REACT_APP_DISCORD_CLIENT_ID}&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fdiscord-auth&response_type=code&scope=guilds%20guilds.join%20identify%20email`}
       />
       <IntegrationCard
         text={SiAsana}
-        active={d}
+        active={asana}
         label="Asana"
         url={`https://app.asana.com/-/oauth_authorize?client_id=${REACT_APP_ASANA_CLIENT_ID}&redirect_uri=http://localhost:3000/asana-auth&response_type=code`}
       />
       <IntegrationCard
         text={SiHeroku}
-        active={e}
+        active={heroku}
         label="Heroku"
         url={`https://id.heroku.com/oauth/authorize?client_id=${REACT_APP_HEROKU_CLIENT_ID}&response_type=code&scope=global&state=${REACT_APP_ANTI_FORGERY}`}
       />
@@ -60,7 +60,7 @@ const Integrate = () => {
   );
 };
 
-const IntegrationCard = ({ text, active, color = null, url, label = null }) => (
+const IntegrationCard = ({ text, active, url, color = null }) => (
   <Box
     p={4}
     m={3}
@@ -72,7 +72,6 @@ const IntegrationCard = ({ text, active, color = null, url, label = null }) => (
   >
     <Flex align="center" justifyContent="space-between">
       <Box as={text} size="64px" color={color} />
-      {/* <Text fontSize="xl">{label}</Text> */}
       <a href={url}>
         <Button
           mt={4}
