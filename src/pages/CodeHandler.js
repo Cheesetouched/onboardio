@@ -18,24 +18,21 @@ const CodeHandler = () => {
   //Dummy JWT token
   const token = "ada214142zxczcz213124241";
   useEffect(() => {
-    async function postCode() {
-      sendCode(service, code, token)
-        .then(async (response) => {
-          response = await response.json();
-          if (response.message) {
-            setState((state) => ({ ...state, error: response.message }));
-          } else {
-            setState((state) => ({ ...state, isLoading: false }));
-          }
-        })
-        .catch(
-          setState((state) => ({
-            ...state,
-            error: "Couldn't connect to the service!",
-          }))
-        );
-    }
-    postCode();
+    sendCode(service, code, token)
+      .then(async (response) => {
+        response = await response.json();
+        if (response.message) {
+          setState((state) => ({ ...state, error: response.message }));
+        } else {
+          setState((state) => ({ ...state, isLoading: false }));
+        }
+      })
+      .catch(
+        setState((state) => ({
+          ...state,
+          error: "Couldn't connect to the service!",
+        }))
+      );
   }, [code, service, token]);
   const { error, isLoading } = state;
   return (
