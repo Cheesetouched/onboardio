@@ -46,7 +46,7 @@ const Navbar = (props) => {
           <span role="img" aria-label="onboard">
             💻{" "}
           </span>
-          <span ml={10}>Dashboard</span>
+          <span style={{ marginLeft: 10 }}>Dashboard</span>
         </Link>
         <Link
           as={ReactLink}
@@ -58,7 +58,7 @@ const Navbar = (props) => {
           <span role="img" aria-label="onboard">
             🔌{" "}
           </span>
-          Connect
+          <span style={{ marginLeft: 10 }}> Connect</span>
         </Link>
       </Box>
 

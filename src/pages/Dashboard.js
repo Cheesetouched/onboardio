@@ -32,7 +32,7 @@ const Dashboard = () => {
             variantColor="teal"
             variant="outline"
             as={ReactLink}
-            to="/create"
+            to="/flow/create"
           >
             Create a Workflow
           </Button>
