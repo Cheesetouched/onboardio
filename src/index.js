@@ -4,6 +4,10 @@ import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+import axios from "axios";
+import {BACKEND_SERVER_URL} from "./constants";
+
+axios.defaults.baseURL = BACKEND_SERVER_URL;
 
 ReactDOM.render(
   <BrowserRouter>

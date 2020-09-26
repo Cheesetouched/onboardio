@@ -1,6 +1,8 @@
-import url from "url";
-import {BACKEND_SERVER_URL} from "../constants";
-
-export function resolvePathToBackend(path){
-    return url.resolve(BACKEND_SERVER_URL, path);
-}
+export const getQueryParams = () =>
+    window.location.search
+        .replace("?", "")
+        .split("&")
+        .reduce(
+            (r, e) => ((r[e.split("=")[0]] = decodeURIComponent(e.split("=")[1])), r),
+            {}
+        );

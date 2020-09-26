@@ -17,6 +17,7 @@ import Dashboard from "./pages/Dashboard";
 import Navbar from "./components/Navbar";
 import CreateFlow from "./pages/CreateFlow";
 import Onboard from "./pages/Onboard";
+import CodeHandler from "./pages/CodeHandler";
 
 function App({ currentUser = false }) {
   return (
@@ -26,6 +27,7 @@ function App({ currentUser = false }) {
         <Navbar />
         <Switch>
           <Route exact path="/" component={Dashboard} />
+          <Route exact path="/connect" component={Integrate} />
           <Route exact path="/flow/create" component={CreateFlow} />
           <Route exact path="/onboard" component={Onboard} />
           <Route
@@ -33,7 +35,7 @@ function App({ currentUser = false }) {
             path="/auth"
             render={() => (currentUser ? <Redirect to="/" /> : <LoginForm />)}
           />
-          <Route exact path="/connect" component={Integrate} />
+          <Route exact path="/authorize/:service" component={CodeHandler} />
         </Switch>
       </ColorModeProvider>
     </ThemeProvider>
