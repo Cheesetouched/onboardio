@@ -6,6 +6,7 @@ import * as bodyParser from "body-parser";
 import * as bodyCleaner from "express-body-cleaner";
 import { AuthRoutes } from "./routes/auth";
 import { RequestLogger } from "./middlewares/requestLogger";
+import {CorsMiddleware} from "./middlewares/cors";
 
 class App {
   public app: express.Application;
@@ -23,6 +24,7 @@ class App {
 
   private config(): void {
     this.app.use(RequestLogger);
+    this.app.use(CorsMiddleware);
     this.app.use(bodyCleaner);
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: false }));
