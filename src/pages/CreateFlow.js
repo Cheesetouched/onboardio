@@ -55,7 +55,6 @@ const CreateFlow = (props) => {
   };
 
   const handleSelectedServicesChange = (value) => {
-    console.log(value);
     setState({ ...state, selectedServices: value });
   };
 
@@ -71,7 +70,7 @@ const CreateFlow = (props) => {
         mt={10}
       >
         <Box p={2} pb={0}>
-          {/* Sign In Page */}
+          {/* Create Flow Page */}
           <Box textAlign="center">
             <Heading>Create New Flow</Heading>
           </Box>
@@ -96,7 +95,8 @@ const CreateFlow = (props) => {
                 <MultiSelect
                   onChange={handleSelectedServicesChange}
                   options={serviceOptions}
-                  mode={"dark"}
+                  values={selectedServices}
+                  placeholder={"Select your services"}
                 />
               </FormControl>
               <Button
