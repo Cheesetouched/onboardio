@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Flex, Box, Button, Text } from "@chakra-ui/core";
 import { GoLogoGithub } from "react-icons/go";
-import { DiMongodb } from "react-icons/di";
-import { SiDiscord, SiTrello, SiHeroku } from "react-icons/si";
+import { SiDiscord, SiHeroku, SiFigma, SiAsana } from "react-icons/si";
 
 const Integrate = () => {
   const [state, setState] = useState({
@@ -17,6 +16,7 @@ const Integrate = () => {
     REACT_APP_GITHUB_CLIENT_ID,
     REACT_APP_DISCORD_CLIENT_ID,
     REACT_APP_HEROKU_CLIENT_ID,
+    REACT_APP_FIGMA_CLIENT_ID,
     REACT_APP_ANTI_FORGERY,
   } = process.env;
   return (
@@ -31,13 +31,13 @@ const Integrate = () => {
         active={a}
         url={`https://github.com/login/oauth/authorize?scope=admin:org&client_id=${REACT_APP_GITHUB_CLIENT_ID}`}
       />
-      <IntegrationCard text={DiMongodb} active={b} />
+      <IntegrationCard text={SiFigma} active={b} />
       <IntegrationCard
         text={SiDiscord}
         active={c}
         url={`https://discord.com/api/oauth2/authorize?client_id=${REACT_APP_DISCORD_CLIENT_ID}&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fdiscord-auth&response_type=code&scope=guilds%20guilds.join%20identify%20email`}
       />
-      <IntegrationCard text={SiTrello} active={d} />
+      <IntegrationCard text={SiAsana} active={d} />
       <IntegrationCard
         text={SiHeroku}
         active={e}
