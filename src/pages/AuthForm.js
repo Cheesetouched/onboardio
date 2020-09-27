@@ -3,7 +3,7 @@ import { Flex, Box } from "@chakra-ui/core";
 
 import SignUpSection from "../components/SignUp";
 import SignInSection from "../components/SignIn";
-import { loginUser, registerUser } from "../services/auth";
+import { loginUserService, registerUserService } from "../services/auth";
 import { withRouter } from "react-router-dom";
 
 const AuthForm = ({ history }) => {
@@ -21,7 +21,7 @@ const AuthForm = ({ history }) => {
     if (password !== confirmPassword) {
       setState({ ...state, error: "Passwords don't match!" });
     } else {
-      return registerUser(email, password)
+      return registerUserService(email, password)
         .then((res) => {
           const { status, token, message } = res;
           if (status === "USER_REGISTERED") {
@@ -38,7 +38,7 @@ const AuthForm = ({ history }) => {
   };
 
   const handleLogin = () => {
-    return loginUser(email, password)
+    return loginUserService(email, password)
       .then((res) => {
         const { status, token, message } = res;
 

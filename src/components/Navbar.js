@@ -10,7 +10,6 @@ import ThemeToggler from "./ThemeToggler";
 const Navbar = (props) => {
   let cta = props.isLoggedIn ? "Sign Out" : "Sign In";
   const signOut = () => {
-    alert("Sign Out!");
     window.localStorage.removeItem("token");
     store.dispatch(signOutUser());
   };
@@ -40,33 +39,34 @@ const Navbar = (props) => {
         justifyContent="flex-end"
         flexGrow={1}
       >
-        <Link
-          as={ReactLink}
-          to="/"
-          mr={6}
-          style={{ textDecoration: "none" }}
-          fontSize="lg"
-        >
-          <span role="img" aria-label="onboard">
-            👨🏻‍💻{" "}
-          </span>
-          <span style={{ marginLeft: 8 }}>Dashboard</span>
-        </Link>
-        <Link
-          as={ReactLink}
-          to="/connect"
-          mr={6}
-          style={{ textDecoration: "none" }}
-          fontSize="lg"
-        >
-          <span role="img" aria-label="onboard">
-            ⚡{" "}
-          </span>
-          <span style={{ marginLeft: 8 }}>
-            {" "}
-            Connect +{`${props.isLoggedIn}`}
-          </span>
-        </Link>
+        {props.isLoggedIn ? (
+          <>
+            <Link
+              as={ReactLink}
+              to="/"
+              mr={6}
+              style={{ textDecoration: "none" }}
+              fontSize="lg"
+            >
+              <span role="img" aria-label="onboard">
+                👨🏻‍💻{" "}
+              </span>
+              <span style={{ marginLeft: 8 }}>Dashboard</span>
+            </Link>
+            <Link
+              as={ReactLink}
+              to="/connect"
+              mr={6}
+              style={{ textDecoration: "none" }}
+              fontSize="lg"
+            >
+              <span role="img" aria-label="onboard">
+                ⚡{" "}
+              </span>
+              <span style={{ marginLeft: 8 }}> Connect</span>
+            </Link>
+          </>
+        ) : null}
       </Box>
 
       <Flex

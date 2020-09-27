@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Route, Switch, Redirect } from "react-router-dom";
 
 import {
@@ -18,20 +19,14 @@ import Navbar from "./components/Navbar";
 import CreateFlow from "./pages/CreateFlow";
 import Onboard from "./pages/Onboard";
 import CodeHandler from "./pages/CodeHandler";
-import { setUserAuthState } from "./redux/actions/auth";
 import AuthorizedRoute from "./components/AuthorizedRoute";
-import { store } from "./redux/store";
-import { useSelector } from "react-redux";
-import { checkIfUserLoggedIn } from "./redux/stateUtils/user";
 
-function App({ currentUser = false }) {
-  const isLoggedIn = useSelector(checkIfUserLoggedIn);
-
+function App({ isLoggedIn }) {
   return (
     <ThemeProvider theme={theme}>
       <ColorModeProvider>
         <CSSReset />
-        <Navbar isLoggedIn />
+        <Navbar isLoggedIn={isLoggedIn} />
         <Switch>
           <AuthorizedRoute exact path="/" component={Dashboard} />
           <AuthorizedRoute exact path="/connect" component={Integrate} />
@@ -54,4 +49,9 @@ function App({ currentUser = false }) {
   );
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  const { user } = state;
+  return { isLoggedIn: user.isLoggedIn };
+};
+
+export default connect(mapStateToProps, null)(App);
