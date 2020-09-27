@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
 import { Redirect, useParams } from "react-router";
 import { Flex, Spinner } from "@chakra-ui/core";
 
@@ -7,7 +8,7 @@ import ErrorMessage from "../components/ErrorMessage";
 import { sendCode } from "../services/query";
 import { getQueryParams } from "../utils/url";
 
-const CodeHandler = () => {
+const CodeHandler = ({ token }) => {
   const [state, setState] = useState({
     error: null,
     isLoading: true,
@@ -15,24 +16,24 @@ const CodeHandler = () => {
   const { service } = useParams();
 
   const { code } = getQueryParams();
-  //Dummy JWT token
-  const token = "ada214142zxczcz213124241";
+
   useEffect(() => {
     sendCode(service, code, token)
       .then(async (response) => {
-        response = await response.json();
-        if (response.message) {
-          setState((state) => ({ ...state, error: response.message }));
+        console.log(response);
+        if (response.status === 200) {
+          setState((state) => ({ ...state, isLoading: false, error: null }));
         } else {
-          setState((state) => ({ ...state, isLoading: false }));
+          setState((state) => ({ ...state, error: response.message }));
         }
       })
-      .catch(
+      .catch((err) => {
+        console.log(err);
         setState((state) => ({
           ...state,
           error: "Couldn't connect to the service!",
-        }))
-      );
+        }));
+      });
   }, [code, service, token]);
   const { error, isLoading } = state;
   return (
@@ -54,4 +55,9 @@ const CodeHandler = () => {
   );
 };
 
-export default CodeHandler;
+const mapStateToProps = (state) => {
+  const { user } = state;
+  return { token: user.token };
+};
+
+export default connect(mapStateToProps, null)(CodeHandler);
