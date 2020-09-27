@@ -18,11 +18,11 @@ import Navbar from "./components/Navbar";
 import CreateFlow from "./pages/CreateFlow";
 import Onboard from "./pages/Onboard";
 import CodeHandler from "./pages/CodeHandler";
-import {setUserAuthState} from "./redux/actions/auth";
+import { setUserAuthState } from "./redux/actions/auth";
 import AuthorizedRoute from "./components/AuthorizedRoute";
-import {store} from "./redux/store";
-import {useSelector} from "react-redux";
-import {checkIfUserLoggedIn} from "./redux/stateUtils/user";
+import { store } from "./redux/store";
+import { useSelector } from "react-redux";
+import { checkIfUserLoggedIn } from "./redux/stateUtils/user";
 
 function App({ currentUser = false }) {
   const isLoggedIn = useSelector(checkIfUserLoggedIn);
@@ -31,13 +31,17 @@ function App({ currentUser = false }) {
     <ThemeProvider theme={theme}>
       <ColorModeProvider>
         <CSSReset />
-        <Navbar />
+        <Navbar isLoggedIn />
         <Switch>
           <AuthorizedRoute exact path="/" component={Dashboard} />
           <AuthorizedRoute exact path="/connect" component={Integrate} />
           <AuthorizedRoute exact path="/flow/create" component={CreateFlow} />
           <AuthorizedRoute exact path="/onboard" component={Onboard} />
-          <AuthorizedRoute exact path="/authorize/:service" component={CodeHandler} />
+          <AuthorizedRoute
+            exact
+            path="/authorize/:service"
+            component={CodeHandler}
+          />
 
           <Route
             exact

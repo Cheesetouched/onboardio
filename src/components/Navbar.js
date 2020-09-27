@@ -1,14 +1,18 @@
 import React from "react";
 import { Link as ReactLink } from "react-router-dom";
 import { Box, Heading, Flex, Button, Link, Text } from "@chakra-ui/core";
+
+import { signOutUser } from "../redux/actions/auth";
+import { store } from "../redux/store";
+
 import ThemeToggler from "./ThemeToggler";
 
 const Navbar = (props) => {
-  let { cta } = props;
-  // Temporary Value
-  cta = "Sign Out";
+  let cta = props.isLoggedIn ? "Sign Out" : "Sign In";
   const signOut = () => {
     alert("Sign Out!");
+    window.localStorage.setItem("token", null);
+    store.dispatch(signOutUser());
   };
   return (
     <Flex
@@ -58,7 +62,10 @@ const Navbar = (props) => {
           <span role="img" aria-label="onboard">
             ⚡{" "}
           </span>
-          <span style={{ marginLeft: 8 }}> Connect</span>
+          <span style={{ marginLeft: 8 }}>
+            {" "}
+            Connect +{`${props.isLoggedIn}`}
+          </span>
         </Link>
       </Box>
 
