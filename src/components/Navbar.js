@@ -1,14 +1,17 @@
 import React from "react";
 import { Link as ReactLink } from "react-router-dom";
 import { Box, Heading, Flex, Button, Link, Text } from "@chakra-ui/core";
+
+import { signOutUser } from "../redux/actions/auth";
+import { store } from "../redux/store";
+
 import ThemeToggler from "./ThemeToggler";
 
 const Navbar = (props) => {
-  let { cta } = props;
-  // Temporary Value
-  cta = "Sign Out";
+  let cta = props.isLoggedIn ? "Sign Out" : "Sign In";
   const signOut = () => {
-    alert("Sign Out!");
+    window.localStorage.removeItem("token");
+    store.dispatch(signOutUser());
   };
   return (
     <Flex
@@ -36,30 +39,34 @@ const Navbar = (props) => {
         justifyContent="flex-end"
         flexGrow={1}
       >
-        <Link
-          as={ReactLink}
-          to="/"
-          mr={6}
-          style={{ textDecoration: "none" }}
-          fontSize="lg"
-        >
-          <span role="img" aria-label="onboard">
-            👨🏻‍💻{" "}
-          </span>
-          <span style={{ marginLeft: 8 }}>Dashboard</span>
-        </Link>
-        <Link
-          as={ReactLink}
-          to="/connect"
-          mr={6}
-          style={{ textDecoration: "none" }}
-          fontSize="lg"
-        >
-          <span role="img" aria-label="onboard">
-            ⚡{" "}
-          </span>
-          <span style={{ marginLeft: 8 }}> Connect</span>
-        </Link>
+        {props.isLoggedIn ? (
+          <>
+            <Link
+              as={ReactLink}
+              to="/"
+              mr={6}
+              style={{ textDecoration: "none" }}
+              fontSize="lg"
+            >
+              <span role="img" aria-label="onboard">
+                👨🏻‍💻{" "}
+              </span>
+              <span style={{ marginLeft: 8 }}>Dashboard</span>
+            </Link>
+            <Link
+              as={ReactLink}
+              to="/connect"
+              mr={6}
+              style={{ textDecoration: "none" }}
+              fontSize="lg"
+            >
+              <span role="img" aria-label="onboard">
+                ⚡{" "}
+              </span>
+              <span style={{ marginLeft: 8 }}> Connect</span>
+            </Link>
+          </>
+        ) : null}
       </Box>
 
       <Flex

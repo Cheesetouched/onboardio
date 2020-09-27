@@ -1,7 +1,12 @@
-export const SET_USER_AUTH_STATE = "SET_USER_AUTH_STATE";
+export const LOGIN_USER = "LOGIN_USER";
+export const SIGN_OUT_USER = "SIGN_OUT_USER";
 
-export const setUserAuthState = (isLoggedIn, token) => ({
-    type: SET_USER_AUTH_STATE,
-    isLoggedIn: isLoggedIn,
-    token: token
+export const loginUser = (isLoggedIn, token) => ({
+  type: LOGIN_USER,
+  isLoggedIn: isLoggedIn,
+  token: token,
+});
+
+export const signOutUser = () => ({
+  type: SIGN_OUT_USER,
 });
