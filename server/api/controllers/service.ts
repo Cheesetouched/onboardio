@@ -1,6 +1,6 @@
 import { Response } from "express";
 import { ServiceProviderService } from "../services/service";
-import {UserInfoRequest} from "../middlewares/strictlyAuthroizedRoutes";
+import {UserInfoRequest} from "../middlewares/strictlyAuthorizedRoutes";
 
 export class ServiceController {
   public getServices(req: UserInfoRequest, res: Response) {

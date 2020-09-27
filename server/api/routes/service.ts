@@ -1,5 +1,5 @@
 import { ServiceController } from "../controllers/service";
-import {StrictlyAuthorizedRoutes} from "../middlewares/strictlyAuthroizedRoutes";
+import {StrictlyAuthorizedRoutes} from "../middlewares/strictlyAuthorizedRoutes";
 
 export class ServiceRoutes {
   public service: ServiceController = new ServiceController();
