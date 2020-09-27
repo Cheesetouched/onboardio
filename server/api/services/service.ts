@@ -23,9 +23,9 @@ export class ServiceService {
   static linkGithub(code: string) {
     return new Promise((resolve, reject) => {
       const params = new URLSearchParams();
-      params.append("client_id", process.env.GITHUB_CLIENT_ID);
-      params.append("client_secret", process.env.GITHUB_CLIENT_SECRET);
+      params.append("grant_type", "authorization_code");
       params.append("code", code);
+      params.append("client_secret", process.env.GITHUB_CLIENT_SECRET);
 
       fetch(process.env.GITHUB_OAUTH_ACCESS_TOKEN, {
         method: "post",
@@ -45,10 +45,10 @@ export class ServiceService {
     return new Promise((resolve, reject) => {
       const params = new URLSearchParams();
       params.append("grant_type", "authorization_code");
-      params.append("client_secret", process.env.HEROKU_OAUTH_SECRET);
       params.append("code", code);
+      params.append("client_secret", process.env.HEROKU_CLIENT_SECRET);
 
-      fetch(process.env.HEROKU_OAUTH_ACCESS_TOKEN_URL, {
+      fetch(process.env.HEROKU_CLIENT_ACCESS_TOKEN_URL, {
         method: "post",
         body: params,
         headers: { Accept: "application/json" },
