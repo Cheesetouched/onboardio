@@ -17,3 +17,13 @@ export const sendCode = (service, code, token) => {
     },
   });
 };
+
+export const getServices = (token) => {
+  return axios({
+    url: `/v1/services/`,
+    method: "get",
+    headers: {
+      Authorization: token,
+    },
+  });
+};

@@ -20,7 +20,6 @@ const CodeHandler = ({ token }) => {
   useEffect(() => {
     sendCode(service, code, token)
       .then(async (response) => {
-        console.log(response);
         if (response.status === 200) {
           setState((state) => ({ ...state, isLoading: false, error: null }));
         } else {
@@ -28,7 +27,6 @@ const CodeHandler = ({ token }) => {
         }
       })
       .catch((err) => {
-        console.log(err);
         setState((state) => ({
           ...state,
           error: "Couldn't connect to the service!",
