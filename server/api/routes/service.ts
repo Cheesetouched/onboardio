@@ -5,6 +5,7 @@ export class ServiceRoutes {
   public service: ServiceController = new ServiceController();
 
   public routes(app): void {
+    app.use(StrictlyAuthorizedRoutes);
     app.route("/").get(this.service.getServices);
     app.route("/asana/link").post(this.service.linkAsana);
     app.route("/discord/link").post(this.service.linkDiscord);
