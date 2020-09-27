@@ -34,11 +34,54 @@ export class ServiceProviderService {
           });
         }
       );
+    });
+  }
 
-      /*
+  static linkAsana(code: string, redirect_uri: string) {
+    return new Promise((resolve, reject) => {
+      const params = new URLSearchParams();
+      params.append("grant_type", "authorization_code");
+      params.append("client_id", process.env.ASANA_CLIENT_ID);
+      params.append("client_secret", process.env.ASANA_CLIENT_SECRET);
+      params.append("code", unescape(code));
+      params.append("redirect_uri", redirect_uri);
 
-      
-      */
+      fetch(process.env.ASANA_TOKEN_EXCHANGE_URL, {
+        method: "post",
+        body: params,
+      })
+        .then((res) => res.json())
+        .then((response) => {
+          if (response.error)
+            reject({ code: 500, message: response.error_description });
+          else resolve(response.access_token);
+        });
+    });
+  }
+
+  static linkDiscord(code: string, redirect_uri: string) {
+    return new Promise((resolve, reject) => {
+      const params = new URLSearchParams();
+      params.append("client_id", process.env.DISCORD_CLIENT_ID);
+      params.append("client_secret", process.env.DISCORD_CLIENT_SECRET);
+      params.append("grant_type", "authorization_code");
+      params.append("redirect_uri", redirect_uri);
+      params.append("code", code);
+      params.append("scope", process.env.DISCORD_SCOPE);
+
+      fetch(process.env.DISCORD_TOKEN_EXCHANGE_URL, {
+        method: "post",
+        body: params,
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      })
+        .then((res) => res.json())
+        .then((response) => {
+          if (response.redirect_uri)
+            reject({ code: 400, message: response.redirect_uri[0] });
+          if (response.error)
+            reject({ code: 500, message: response.error_description });
+          else resolve(response.access_token);
+        });
     });
   }
 
@@ -78,28 +121,6 @@ export class ServiceProviderService {
         .then((response) => {
           if (response.id == "unauthorized")
             reject({ code: 500, message: response.message });
-          else resolve(response.access_token);
-        });
-    });
-  }
-
-  static linkAsana(code: string, redirect_uri: string) {
-    return new Promise((resolve, reject) => {
-      const params = new URLSearchParams();
-      params.append("grant_type", "authorization_code");
-      params.append("client_id", process.env.ASANA_CLIENT_ID);
-      params.append("client_secret", process.env.ASANA_CLIENT_SECRET);
-      params.append("code", unescape(code));
-      params.append("redirect_uri", redirect_uri);
-
-      fetch(process.env.ASANA_TOKEN_EXCHANGE_URL, {
-        method: "post",
-        body: params,
-      })
-        .then((res) => res.json())
-        .then((response) => {
-          if (response.error)
-            reject({ code: 500, message: response.error_description });
           else resolve(response.access_token);
         });
     });

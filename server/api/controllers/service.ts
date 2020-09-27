@@ -7,6 +7,66 @@ export class ServiceController {
     res.send(req.userInfo.services);
   }
 
+  public linkAsana(req: UserInfoRequest, res: Response) {
+    const { code, redirect_uri } = req.body;
+
+    ServiceProviderService.linkAsana(code, redirect_uri)
+      .then((accessToken) => {
+        ServiceProviderService.saveService({
+          email: req.userInfo.email,
+          name: "Asana",
+          token: accessToken,
+        })
+          .then((result) => {
+            return res.send({
+              status: "SAVED_ASANA_SERVICE",
+              message: result,
+            });
+          })
+          .catch((err) => {
+            return res.status(err.code).send({
+              status: "FAILED_TO_SAVE_ASANA_SERVICE",
+              message: err.message,
+            });
+          });
+      })
+      .catch((err) => {
+        return res
+          .status(err.code)
+          .send({ status: "FAILED_TO_LINK_ASANA", message: err.message });
+      });
+  }
+
+  public linkDiscord(req: UserInfoRequest, res: Response) {
+    const { code, redirect_uri } = req.body;
+
+    ServiceProviderService.linkDiscord(code, redirect_uri)
+      .then((accessToken) => {
+        ServiceProviderService.saveService({
+          email: req.userInfo.email,
+          name: "Discord",
+          token: accessToken,
+        })
+          .then((result) => {
+            return res.send({
+              status: "SAVED_DISCORD_SERVICE",
+              message: result,
+            });
+          })
+          .catch((err) => {
+            return res.status(err.code).send({
+              status: "FAILED_TO_SAVE_DISCORD_SERVICE",
+              message: err.message,
+            });
+          });
+      })
+      .catch((err) => {
+        return res
+          .status(err.code)
+          .send({ status: "FAILED_TO_LINK_DISCORD", message: err.message });
+      });
+  }
+
   public linkGithub(req: UserInfoRequest, res: Response) {
     const { code } = req.body;
 
@@ -64,36 +124,6 @@ export class ServiceController {
         return res
           .status(err.code)
           .send({ status: "FAILED_TO_LINK_HEROKU", message: err.message });
-      });
-  }
-
-  public linkAsana(req: UserInfoRequest, res: Response) {
-    const { code, redirect_uri } = req.body;
-
-    ServiceProviderService.linkAsana(code, redirect_uri)
-      .then((accessToken) => {
-        ServiceProviderService.saveService({
-          email: req.userInfo.email,
-          name: "Asana",
-          token: accessToken,
-        })
-          .then((result) => {
-            return res.send({
-              status: "SAVED_ASANA_SERVICE",
-              message: result,
-            });
-          })
-          .catch((err) => {
-            return res.status(err.code).send({
-              status: "FAILED_TO_SAVE_ASANA_SERVICE",
-              message: err.message,
-            });
-          });
-      })
-      .catch((err) => {
-        return res
-          .status(err.code)
-          .send({ status: "FAILED_TO_LINK_ASANA", message: err.message });
       });
   }
 
