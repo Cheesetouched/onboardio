@@ -61,4 +61,27 @@ export class ServiceService {
         });
     });
   }
+
+  static linkAsana(code: string, redirect_uri: string) {
+    return new Promise((resolve, reject) => {
+      const params = new URLSearchParams();
+      params.append("grant_type", "authorization_code");
+      params.append("client_id", process.env.ASANA_CLIENT_ID);
+      params.append("client_secret", process.env.ASANA_CLIENT_SECRET);
+      params.append("code", code);
+      params.append("redirect_uri", redirect_uri);
+
+      fetch(process.env.ASANA_CLIENT_ACCESS_TOKEN_URL, {
+        method: "post",
+        body: params,
+        headers: { Accept: "application/json" },
+      })
+        .then((res) => res.json())
+        .then((response) => {
+          if (response.error)
+            reject({ code: 500, message: response.error_description });
+          else resolve(response.access_token);
+        });
+    });
+  }
 }

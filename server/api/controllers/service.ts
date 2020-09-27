@@ -66,4 +66,34 @@ export class ServiceController {
           .send({ status: "FAILED_TO_LINK_HEROKU", message: err.message });
       });
   }
+
+  public linkAsana(req: HeaderMiddleware, res: Response) {
+    const { code, redirect_uri } = req.body;
+
+    ServiceService.linkAsana(code, redirect_uri)
+      .then((accessToken) => {
+        ServiceService.saveService({
+          email: req.user.email,
+          name: "Asana",
+          token: accessToken,
+        })
+          .then((result) => {
+            return res.send({
+              status: "SAVED_ASANA_SERVICE",
+              message: result,
+            });
+          })
+          .catch((err) => {
+            return res.status(err.code).send({
+              status: "FAILED_TO_SAVE_ASANA_SERVICE",
+              message: err.message,
+            });
+          });
+      })
+      .catch((err) => {
+        return res
+          .status(err.code)
+          .send({ status: "FAILED_TO_LINK_ASANA", message: err.message });
+      });
+  }
 }

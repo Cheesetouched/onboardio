@@ -40,5 +40,6 @@ export class ServiceRoutes {
     app.route("/").get(this.service.getServices);
     app.route("/github/link").post(this.service.linkGithub);
     app.route("/heroku/link").post(this.service.linkHeroku);
+    app.route("/asana/link").post(this.service.linkAsana);
   }
 }
