@@ -13,7 +13,7 @@ const AuthForm = ({ history }) => {
     confirmPassword: "",
     isLoading: false,
     error: null,
-    signUp: true,
+    signUp: false,
   });
   const { email, password, confirmPassword, signUp } = state;
 
