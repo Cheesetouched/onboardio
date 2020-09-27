@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Flex, Box, Button, Text, Heading } from "@chakra-ui/core";
 import { SiGithub, SiDiscord, SiHeroku, SiZoom, SiAsana } from "react-icons/si";
+import { CLIENT_URL, DISCORD_URL } from "../constants";
 
 const Integrate = () => {
   const [state, setState] = useState({
@@ -19,6 +20,7 @@ const Integrate = () => {
     REACT_APP_ZOOM_CLIENT_ID,
     REACT_APP_ANTI_FORGERY,
   } = process.env;
+
   return (
     <Flex
       width="full"
@@ -36,19 +38,19 @@ const Integrate = () => {
         text={SiZoom}
         active={zoom}
         label="Zoom"
-        url={`https://zoom.us/oauth/authorize?response_type=code&client_id=${REACT_APP_ZOOM_CLIENT_ID}&redirect_uri=http://localhost:3000/authorize/zoom`}
+        url={`https://zoom.us/oauth/authorize?response_type=code&client_id=${REACT_APP_ZOOM_CLIENT_ID}&redirect_uri=${CLIENT_URL}authorize/zoom`}
       />
       <IntegrationCard
         text={SiDiscord}
         active={discord}
         label="Discord"
-        url={`https://discord.com/api/oauth2/authorize?client_id=${REACT_APP_DISCORD_CLIENT_ID}&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauthorize%2Fdiscord&response_type=code&scope=identify%20email%20guilds%20guilds.join`}
+        url={`https://discord.com/api/oauth2/authorize?client_id=${REACT_APP_DISCORD_CLIENT_ID}&redirect_uri=${DISCORD_URL}authorize%2Fdiscord&response_type=code&scope=identify%20email%20guilds%20guilds.join%20relationships.read%20activities.write%20activities.read%20gdm.join`}
       />
       <IntegrationCard
         text={SiAsana}
         active={asana}
         label="Asana"
-        url={`https://app.asana.com/-/oauth_authorize?client_id=${REACT_APP_ASANA_CLIENT_ID}&redirect_uri=http://localhost:3000/authorize/asana&response_type=code`}
+        url={`https://app.asana.com/-/oauth_authorize?client_id=${REACT_APP_ASANA_CLIENT_ID}&redirect_uri=${CLIENT_URL}authorize/asana&response_type=code`}
       />
       <IntegrationCard
         text={SiHeroku}
