@@ -23,7 +23,7 @@ export const StrictlyAuthorizedRoutes = async (req: DecodedUserTokenRequest, res
     } else {
         return res.status(403).send({
             success: false,
-            message: "Not Authroized",
+            message: "Not Authorized",
         });
     }
 }
