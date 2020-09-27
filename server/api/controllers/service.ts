@@ -1,6 +1,6 @@
 import { Response } from "express";
 import { HeaderMiddleware } from "../middlewares/header";
-import { ServiceService } from "../services/service";
+import { ServiceProviderService } from "../services/service";
 
 export class ServiceController {
   public getServices(req: HeaderMiddleware, res: Response) {
@@ -10,9 +10,9 @@ export class ServiceController {
   public linkGithub(req: HeaderMiddleware, res: Response) {
     const { code } = req.body;
 
-    ServiceService.linkGithub(code)
+    ServiceProviderService.linkGithub(code)
       .then((accessToken) => {
-        ServiceService.saveService({
+        ServiceProviderService.saveService({
           email: req.user.email,
           name: "GitHub",
           token: accessToken,

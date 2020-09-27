@@ -5,7 +5,7 @@ import { UserModel } from "../models/user";
 
 const User = mongoose.model("User", UserModel);
 
-export class ServiceService {
+export class ServiceProviderService {
   static saveService(payload) {
     return new Promise((resolve, reject) => {
       User.updateOne(
