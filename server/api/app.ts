@@ -8,6 +8,7 @@ import { AuthRoutes } from "./routes/auth";
 import { ServiceRoutes } from "./routes/service";
 import { RequestLogger } from "./middlewares/requestLogger";
 import {CorsMiddleware} from "./middlewares/cors";
+import {AuthorizationChecker} from "./middlewares/authorizationChecker";
 
 class App {
   public app: express.Application;
@@ -32,6 +33,7 @@ class App {
     this.app.use(bodyCleaner);
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: false }));
+    this.app.use(AuthorizationChecker);
     this.app.use("/v1/auth", this.authRouter);
     this.app.use("/v1/services", this.serviceRouter);
   }
