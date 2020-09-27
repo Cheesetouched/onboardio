@@ -70,7 +70,7 @@ const AuthForm = ({ history }) => {
   };
 
   const toggleSignupLogin = () => {
-    setState({ ...state, signUp: !signUp });
+    setState({ ...state, signUp: !signUp, error: null });
   };
 
   const props = {
