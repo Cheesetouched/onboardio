@@ -29,7 +29,7 @@ const CodeHandler = ({ token }) => {
       .catch((err) => {
         setState((state) => ({
           ...state,
-          error: "Couldn't connect to the service!",
+          error: err.message,
         }));
       });
   }, [code, service, token]);

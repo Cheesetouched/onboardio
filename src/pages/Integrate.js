@@ -28,13 +28,11 @@ const Integrate = ({ token }) => {
           setState((state) => ({ ...state, [element.name]: true }));
         });
         setState((state) => ({ ...state, isLoading: false, error: null }));
-        console.log(response);
         if (response.status !== 200) {
           setState((state) => ({ ...state, error: response.message }));
         }
       })
       .catch((err) => {
-        console.log(err);
         setState((state) => ({
           ...state,
           error: "Couldn't connect to the service!",
