@@ -30,7 +30,6 @@ ReactDOM.render(
       <Provider store={store}>
         <App />
       </Provider>
-      ,
     </React.StrictMode>
   </BrowserRouter>,
   document.getElementById("root")
