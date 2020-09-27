@@ -104,4 +104,31 @@ export class ServiceProviderService {
         });
     });
   }
+
+  static linkZoom(code: string, redirect_uri: string) {
+    return new Promise((resolve, reject) => {
+      const params = new URLSearchParams();
+      params.append("grant_type", "authorization_code");
+      params.append("code", unescape(code));
+      params.append("redirect_uri", redirect_uri);
+
+      fetch(process.env.ZOOM_TOKEN_EXCHANGE_URL, {
+        method: "post",
+        body: params,
+        headers: {
+          Authorization:
+            "Basic " +
+            Buffer.from(
+              process.env.ZOOM_CLIENT_ID + ":" + process.env.ZOOM_CLIENT_SECRET
+            ).toString("base64"),
+        },
+      })
+        .then((res) => res.json())
+        .then((response) => {
+          if (response.error)
+            reject({ code: 500, message: response.error_description });
+          else resolve(response.access_token);
+        });
+    });
+  }
 }

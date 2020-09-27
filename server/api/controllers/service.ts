@@ -96,4 +96,34 @@ export class ServiceController {
           .send({ status: "FAILED_TO_LINK_ASANA", message: err.message });
       });
   }
+
+  public linkZoom(req: UserInfoRequest, res: Response) {
+    const { code, redirect_uri } = req.body;
+
+    ServiceProviderService.linkZoom(code, redirect_uri)
+      .then((accessToken) => {
+        ServiceProviderService.saveService({
+          email: req.userInfo.email,
+          name: "Zoom",
+          token: accessToken,
+        })
+          .then((result) => {
+            return res.send({
+              status: "SAVED_ZOOM_SERVICE",
+              message: result,
+            });
+          })
+          .catch((err) => {
+            return res.status(err.code).send({
+              status: "FAILED_TO_SAVE_ZOOM_SERVICE",
+              message: err.message,
+            });
+          });
+      })
+      .catch((err) => {
+        return res
+          .status(err.code)
+          .send({ status: "FAILED_TO_LINK_ZOOM", message: err.message });
+      });
+  }
 }
