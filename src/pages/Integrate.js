@@ -36,19 +36,19 @@ const Integrate = () => {
         text={SiZoom}
         active={zoom}
         label="Zoom"
-        url={`https://zoom.us/oauth/authorize?response_type=code&client_id=${REACT_APP_ZOOM_CLIENT_ID}&redirect_uri=http://localhost:3000/athr/zoom`}
+        url={`https://zoom.us/oauth/authorize?response_type=code&client_id=${REACT_APP_ZOOM_CLIENT_ID}&redirect_uri=http://localhost:3000/authorize/zoom`}
       />
       <IntegrationCard
         text={SiDiscord}
         active={discord}
         label="Discord"
-        url={`https://discord.com/api/oauth2/authorize?client_id=${REACT_APP_DISCORD_CLIENT_ID}&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fdiscord-auth&response_type=code&scope=guilds%20guilds.join%20identify%20email`}
+        url={`https://discord.com/api/oauth2/authorize?client_id=${REACT_APP_DISCORD_CLIENT_ID}&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauthorize%2Fdiscord&response_type=code&scope=identify%20email%20guilds%20guilds.join`}
       />
       <IntegrationCard
         text={SiAsana}
         active={asana}
         label="Asana"
-        url={`https://app.asana.com/-/oauth_authorize?client_id=${REACT_APP_ASANA_CLIENT_ID}&redirect_uri=http://localhost:3000/asana-auth&response_type=code`}
+        url={`https://app.asana.com/-/oauth_authorize?client_id=${REACT_APP_ASANA_CLIENT_ID}&redirect_uri=http://localhost:3000/authorize/asana&response_type=code`}
       />
       <IntegrationCard
         text={SiHeroku}
