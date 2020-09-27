@@ -44,7 +44,7 @@ const Integrate = () => {
         text={SiDiscord}
         active={discord}
         label="Discord"
-        url={`https://discord.com/api/oauth2/authorize?client_id=${REACT_APP_DISCORD_CLIENT_ID}&redirect_uri=${DISCORD_URL}authorize%2Fdiscord&response_type=code&scope=identify%20email%20guilds%20guilds.join%20relationships.read%20activities.write%20activities.read%20gdm.join`}
+        url={`https://discord.com/api/oauth2/authorize?client_id=${REACT_APP_DISCORD_CLIENT_ID}&redirect_uri=${DISCORD_URL}authorize%2Fdiscord&response_type=code&scope=guilds.join`}
       />
       <IntegrationCard
         text={SiAsana}
