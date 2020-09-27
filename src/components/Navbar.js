@@ -11,7 +11,7 @@ const Navbar = (props) => {
   let cta = props.isLoggedIn ? "Sign Out" : "Sign In";
   const signOut = () => {
     alert("Sign Out!");
-    window.localStorage.setItem("token", null);
+    window.localStorage.removeItem("token");
     store.dispatch(signOutUser());
   };
   return (
