@@ -20,8 +20,6 @@ const Navbar = (props) => {
       justify="space-between"
       wrap="wrap"
       padding="1.5rem"
-      bg="teal.500"
-      color="white"
       {...props}
     >
       <Flex align="center" mr={5}>
