@@ -40,9 +40,9 @@ export class ServiceController {
   public linkHeroku(req: HeaderMiddleware, res: Response) {
     const { code } = req.body;
 
-    ServiceService.linkHeroku(code)
+    ServiceProviderService.linkHeroku(code)
       .then((accessToken) => {
-        ServiceService.saveService({
+        ServiceProviderService.saveService({
           email: req.user.email,
           name: "Heroku",
           token: accessToken,
@@ -70,9 +70,9 @@ export class ServiceController {
   public linkAsana(req: HeaderMiddleware, res: Response) {
     const { code, redirect_uri } = req.body;
 
-    ServiceService.linkAsana(code, redirect_uri)
+    ServiceProviderService.linkAsana(code, redirect_uri)
       .then((accessToken) => {
-        ServiceService.saveService({
+        ServiceProviderService.saveService({
           email: req.user.email,
           name: "Asana",
           token: accessToken,
