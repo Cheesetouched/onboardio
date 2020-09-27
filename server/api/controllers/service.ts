@@ -1,19 +1,19 @@
 import { Response } from "express";
-import { HeaderMiddleware } from "../middlewares/header";
 import { ServiceProviderService } from "../services/service";
+import {UserInfoRequest} from "../middlewares/strictlyAuthroizedRoutes";
 
 export class ServiceController {
-  public getServices(req: HeaderMiddleware, res: Response) {
-    res.send(req.user.services);
+  public getServices(req: UserInfoRequest, res: Response) {
+    res.send(req.userInfo.services);
   }
 
-  public linkGithub(req: HeaderMiddleware, res: Response) {
+  public linkGithub(req: UserInfoRequest, res: Response) {
     const { code } = req.body;
 
     ServiceProviderService.linkGithub(code)
       .then((accessToken) => {
         ServiceProviderService.saveService({
-          email: req.user.email,
+          email: req.userInfo.email,
           name: "GitHub",
           token: accessToken,
         })
@@ -37,13 +37,13 @@ export class ServiceController {
       });
   }
 
-  public linkHeroku(req: HeaderMiddleware, res: Response) {
+  public linkHeroku(req: UserInfoRequest, res: Response) {
     const { code } = req.body;
 
     ServiceProviderService.linkHeroku(code)
       .then((accessToken) => {
         ServiceProviderService.saveService({
-          email: req.user.email,
+          email: req.userInfo.email,
           name: "Heroku",
           token: accessToken,
         })
@@ -67,13 +67,13 @@ export class ServiceController {
       });
   }
 
-  public linkAsana(req: HeaderMiddleware, res: Response) {
+  public linkAsana(req: UserInfoRequest, res: Response) {
     const { code, redirect_uri } = req.body;
 
     ServiceProviderService.linkAsana(code, redirect_uri)
       .then((accessToken) => {
         ServiceProviderService.saveService({
-          email: req.user.email,
+          email: req.userInfo.email,
           name: "Asana",
           token: accessToken,
         })

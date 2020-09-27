@@ -16,3 +16,7 @@ export interface UserInterface {
   services: Service[];
   flows: Flow[];
 }
+
+export interface DecodedUserTokenInfo{
+  email: String;
+}
