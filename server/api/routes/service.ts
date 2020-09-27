@@ -23,7 +23,7 @@ export class ServiceRoutes {
                 message: "Invalid token",
               });
             } else {
-              let profile = await User.findOne({ mobile: decoded.mobile });
+              let profile = await User.findOne({ email: decoded.email });
               const request = req as HeaderMiddleware;
               request.user = profile;
               next();
