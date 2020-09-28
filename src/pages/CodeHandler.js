@@ -15,10 +15,12 @@ const CodeHandler = ({ token }) => {
   });
   const { service } = useParams();
 
-  const { code } = getQueryParams();
-
+  const params = getQueryParams();
+  const code = params.code;
+  let accounts_server = params["accounts-server"];
+  accounts_server = decodeURI(accounts_server);
   useEffect(() => {
-    sendCode(service, code)
+    sendCode(service, code, accounts_server)
       .then(async (response) => {
         if (response.status === 200) {
           setState((state) => ({ ...state, isLoading: false, error: null }));

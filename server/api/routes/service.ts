@@ -13,5 +13,6 @@ export class ServiceRoutes {
     app.route("/heroku/link").post(this.service.linkHeroku);
     app.route("/asana/link").post(this.service.linkAsana);
     app.route("/zoom/link").post(this.service.linkZoom);
+    app.route("/zoho/link").post(this.service.linkZoho);
   }
 }
