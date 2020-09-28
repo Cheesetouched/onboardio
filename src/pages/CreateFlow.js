@@ -19,7 +19,11 @@ import {
     getServicesInPriorityOrder,
     getServicesThatNeedExtraInput
 } from "../utils/helpers";
-import {fetchAllAsanaWorkspaces, fetchAllHerokuTeams, fetchAvailableGithubOrganizations} from "../services/serviceProviders";
+import {
+    fetchAllAsanaWorkspaces,
+    fetchAllHerokuTeams,
+    fetchAvailableGithubOrganizations
+} from "../services/serviceProviders";
 import {getAsanaWorkspacesList, getGithubOrganizationsList, getHerokuTeamsList} from "../redux/stateUtils/services";
 
 const FORMS = {
@@ -38,7 +42,7 @@ const SERVICE_FORM_MAP = {
 };
 
 const ServiceInputForm = (props) => {
-    const {formType, isLastForm, goToNextFormCallback} = props;
+    const {formType, isLastForm, servicesInputs, updateServiceInputsCallback, goToNextFormCallback} = props;
     const [state, setState] = useState({
         isLoading: false,
         error: null
@@ -52,12 +56,33 @@ const ServiceInputForm = (props) => {
 
     const handleSubmitForm = (event) => {
         event.preventDefault();
+        switch(formType){
+            case FORMS.GITHUB_USER_INPUT_FORM:
+                if(!(servicesInputs["github"].organizations && servicesInputs["github"].organizations.length)){
+                    return setState({...state, error: "Please select at least one organization to continue"});
+                }
+                break;
+            case FORMS.ASANA_USER_INPUT_FORM:
+                if(!(servicesInputs["asana"].workspaces && servicesInputs["asana"].workspaces.length)){
+                    return setState({...state, error: "Please select at least one team to continue"});
+                }
+                break;
+            case FORMS.DISCORD_USER_INPUT_FORM:
+                break;
+            case FORMS.HEROKU_USER_INPUT_FORM:
+                if(!(servicesInputs["heroku"].teams && servicesInputs["heroku"].teams.length)){
+                    return setState({...state, error: "Please select at least one team to continue"});
+                }
+                break;
+        }
+
+        setState({...state, error: null});
         goToNextFormCallback();
     };
 
     let renderedServiceForm = null;
 
-    useEffect(()=>{
+    useEffect(() => {
         switch (formType) {
             case FORMS.GITHUB_USER_INPUT_FORM:
                 fetchAvailableGithubOrganizations();
@@ -77,6 +102,10 @@ const ServiceInputForm = (props) => {
                 return {label: org.login, value: org.id}
             });
 
+            const handleGithubOrgSelectionChange = (values) => {
+                updateServiceInputsCallback("github", {organizations: values});
+            }
+
             renderedServiceForm = (
                 <>
                     <FormControl isRequired>
@@ -84,8 +113,9 @@ const ServiceInputForm = (props) => {
                             Select your Github organization
                         </FormLabel>
                         <MultiSelect
-                            onChange={()=>{}}
+                            onChange={handleGithubOrgSelectionChange}
                             options={organizationsOptions}
+                            values={servicesInputs["github"] ? servicesInputs["github"]["organizations"] : []}
                             placeholder={"Select your services"}
                         />
                     </FormControl>
@@ -100,7 +130,8 @@ const ServiceInputForm = (props) => {
                             Select your Github organization
                         </FormLabel>
                         <MultiSelect
-                            onChange={()=>{}}
+                            onChange={() => {
+                            }}
                             options={organizationsOptions}
                             placeholder={"Select your organizations"}
                         />
@@ -113,6 +144,10 @@ const ServiceInputForm = (props) => {
                 return {label: org.name, value: org.gid}
             });
 
+            const handleAsanaWorkspacesSelectionChange = (values) => {
+                updateServiceInputsCallback("asana", {workspaces: values});
+            }
+
             renderedServiceForm = (
                 <>
                     <FormControl isRequired>
@@ -120,7 +155,8 @@ const ServiceInputForm = (props) => {
                             Select your Asana workspaces
                         </FormLabel>
                         <MultiSelect
-                            onChange={()=>{}}
+                            onChange={handleAsanaWorkspacesSelectionChange}
+                            values={servicesInputs["asana"] ? servicesInputs["asana"]["workspaces"] : []}
                             options={asanaWorkspacesOptions}
                             placeholder={"Select your workspaces"}
                         />
@@ -133,6 +169,10 @@ const ServiceInputForm = (props) => {
                 return {label: team.name, value: team.id}
             });
 
+            const handleHerokuTeamSelectionChange = (values) => {
+                updateServiceInputsCallback("heroku", {teams: values});
+            }
+
             renderedServiceForm = (
                 <>
                     <FormControl isRequired>
@@ -140,7 +180,8 @@ const ServiceInputForm = (props) => {
                             Select your Heroku Teams
                         </FormLabel>
                         <MultiSelect
-                            onChange={()=>{}}
+                            onChange={handleHerokuTeamSelectionChange}
+                            values={servicesInputs["heroku"] ? servicesInputs["heroku"]["teams"] : []}
                             options={herokuTeamsOptions}
                             placeholder={"Select your teams"}
                         />
@@ -149,7 +190,7 @@ const ServiceInputForm = (props) => {
             )
             break;
         default:
-           break;
+            break;
     }
     ;
 
@@ -200,6 +241,19 @@ const CreateFlow = (props) => {
         alert(`Creating a flow now`);
     };
 
+    const updateServiceInputs = (service, values) => {
+        setState({
+            ...state,
+            servicesInputs: {
+                ...state.servicesInputs,
+                [service]: {
+                    ...state.servicesInputs[service],
+                    ...values
+                }
+            }
+        })
+    };
+
     const selectedServiceOptionsInPriority = getServicesInPriorityOrder(selectedServices);
 
     const checkIfItIsLastForm = (currentServiceIndex) => {
@@ -211,7 +265,7 @@ const CreateFlow = (props) => {
             return SERVICE_FORM_MAP[service.label.toLowerCase()] === currentForm;
         });
 
-        if(currentServiceFormIndex > 0){
+        if (currentServiceFormIndex > 0) {
             const previousService = selectedServiceOptionsInPriority[currentServiceFormIndex - 1];
             setState({
                 ...state,
@@ -221,21 +275,21 @@ const CreateFlow = (props) => {
         } else {
             setState({
                 ...state,
-                isLastForm:checkIfItIsLastForm(0),
+                isLastForm: checkIfItIsLastForm(0),
                 currentForm: FORMS.CREATE_FLOW_FORM
             });
         }
     };
 
-    const goToNextForm = () =>{
-        if(isLastForm){
+    const goToNextForm = () => {
+        if (isLastForm) {
             submitForm();
         } else {
             const currentServiceFormIndex = selectedServiceOptionsInPriority.findIndex(service => {
                 return SERVICE_FORM_MAP[service.label.toLowerCase()] === currentForm;
             });
 
-            if(currentServiceFormIndex === -1){
+            if (currentServiceFormIndex === -1) {
                 setState({
                     ...state,
                     isLastForm: checkIfItIsLastForm(0),
@@ -243,7 +297,11 @@ const CreateFlow = (props) => {
                 });
             } else {
                 const nextService = selectedServiceOptionsInPriority[currentServiceFormIndex + 1];
-                setState({...state, isLastForm: checkIfItIsLastForm(currentServiceFormIndex + 1), currentForm: SERVICE_FORM_MAP[nextService.label.toLowerCase()]});
+                setState({
+                    ...state,
+                    isLastForm: checkIfItIsLastForm(currentServiceFormIndex + 1),
+                    currentForm: SERVICE_FORM_MAP[nextService.label.toLowerCase()]
+                });
             }
 
         }
@@ -251,10 +309,17 @@ const CreateFlow = (props) => {
 
     const handleCreateFlowFormSubmit = (event) => {
         event.preventDefault();
-        if(isLastForm){
-           submitForm();
+        if (flowName !== "" && selectedServices.length > 0) {
+            setState({ ...state, error: null });
+            if (isLastForm) {
+                submitForm();
+            } else {
+                goToNextForm();
+            }
         } else {
-            goToNextForm();
+            const errorMessage =
+                flowName === "" ? "Empty flow name provided" : "No services selected";
+            setState({ ...state, error: errorMessage });
         }
     };
 
@@ -321,12 +386,17 @@ const CreateFlow = (props) => {
                                     {isLoading ? (
                                         <CircularProgress isIndeterminate size="24px" color="teal"/>
                                     ) : (
-                                        isLastForm ? "Create Flow" :  "Continue"
+                                        isLastForm ? "Create Flow" : "Continue"
                                     )}
                                 </Button>
                             </form>
                         </Box>
-                    ) : (<ServiceInputForm isLastForm={isLastForm} goToNextFormCallback={goToNextForm} formType={currentForm}/>)}
+                    ) : (<ServiceInputForm
+                        updateServiceInputsCallback={updateServiceInputs}
+                        servicesInputs={servicesInputs}
+                        isLastForm={isLastForm}
+                        goToNextFormCallback={goToNextForm}
+                        formType={currentForm}/>)}
                 </Box>
             </Box>
         </Flex>
