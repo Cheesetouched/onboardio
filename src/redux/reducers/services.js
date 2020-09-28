@@ -1,4 +1,4 @@
-import {SET_ASANA_WORKSPACES_LIST, SET_GITHUB_ORGANIZATIONS_LIST} from "../actions/services";
+import {SET_ASANA_WORKSPACES_LIST, SET_GITHUB_ORGANIZATIONS_LIST, SET_HEROKU_TEAMS_LIST} from "../actions/services";
 
 const initialState = {
     github: {
@@ -6,7 +6,11 @@ const initialState = {
     },
     asana: {
         workspaces: []
+    },
+    heroku: {
+        teams: []
     }
+
 };
 
 const services = (state = initialState, action) => {
@@ -25,6 +29,14 @@ const services = (state = initialState, action) => {
                 asana: {
                     ...state.asana,
                     workspaces: action.workspaces
+                }
+            }
+        case SET_HEROKU_TEAMS_LIST:
+            return {
+                ...state,
+                heroku: {
+                    ...state.asana,
+                    teams: action.teams
                 }
             }
         default:

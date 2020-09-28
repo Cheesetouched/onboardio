@@ -19,8 +19,8 @@ import {
     getServicesInPriorityOrder,
     getServicesThatNeedExtraInput
 } from "../utils/helpers";
-import {fetchAllAsanaWorkspaces, fetchAvailableGithubOrganizations} from "../services/serviceProviders";
-import {getAsanaWorkspacesList, getGithubOrganizationsList} from "../redux/stateUtils/services";
+import {fetchAllAsanaWorkspaces, fetchAllHerokuTeams, fetchAvailableGithubOrganizations} from "../services/serviceProviders";
+import {getAsanaWorkspacesList, getGithubOrganizationsList, getHerokuTeamsList} from "../redux/stateUtils/services";
 
 const FORMS = {
     CREATE_FLOW_FORM: "CREATE_FLOW_FORM",
@@ -46,6 +46,7 @@ const ServiceInputForm = (props) => {
 
     const githubOrganizations = useSelector(getGithubOrganizationsList);
     const asanaWorkspaces = useSelector(getAsanaWorkspacesList);
+    const herokuTeams = useSelector(getHerokuTeamsList);
 
     const {error, isLoading} = state;
 
@@ -63,6 +64,9 @@ const ServiceInputForm = (props) => {
                 break;
             case FORMS.ASANA_USER_INPUT_FORM:
                 fetchAllAsanaWorkspaces();
+                break;
+            case FORMS.HEROKU_USER_INPUT_FORM:
+                fetchAllHerokuTeams();
                 break;
         }
     }, [formType]);
@@ -98,7 +102,7 @@ const ServiceInputForm = (props) => {
                         <MultiSelect
                             onChange={()=>{}}
                             options={organizationsOptions}
-                            placeholder={"Select your services"}
+                            placeholder={"Select your organizations"}
                         />
                     </FormControl>
                 </>
@@ -119,6 +123,26 @@ const ServiceInputForm = (props) => {
                             onChange={()=>{}}
                             options={asanaWorkspacesOptions}
                             placeholder={"Select your workspaces"}
+                        />
+                    </FormControl>
+                </>
+            )
+            break;
+        case FORMS.HEROKU_USER_INPUT_FORM:
+            const herokuTeamsOptions = herokuTeams.map(team => {
+                return {label: team.name, value: team.id}
+            });
+
+            renderedServiceForm = (
+                <>
+                    <FormControl isRequired>
+                        <FormLabel mt={4} mb={2}>
+                            Select your Heroku Teams
+                        </FormLabel>
+                        <MultiSelect
+                            onChange={()=>{}}
+                            options={herokuTeamsOptions}
+                            placeholder={"Select your teams"}
                         />
                     </FormControl>
                 </>

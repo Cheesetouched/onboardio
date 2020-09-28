@@ -1,5 +1,5 @@
-const servicesThatNeedsExtraInput = ["Github", "Discord", "Asana"];
-const servicesThatNeedListInput = ["Github"];
+const servicesThatNeedsExtraInput = ["Github", "Discord", "Asana", "Heroku"];
+const servicesThatNeedListInput = ["Github", "Discord", "Asana", "Heroku"];
 
 export const getServicesThatNeedExtraInput = (serviceOptions) => {
     return serviceOptions.filter(serviceOption=>{

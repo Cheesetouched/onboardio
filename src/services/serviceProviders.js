@@ -1,4 +1,4 @@
-import {setAsanaWorkspacesList, setGithubOrganizationList} from "../redux/actions/services";
+import {setAsanaWorkspacesList, setGithubOrganizationList, setHerokuTeamsList} from "../redux/actions/services";
 import {store} from "../redux/store";
 import axios from "axios";
 import {useSelector} from "react-redux";
@@ -40,3 +40,23 @@ export const fetchAllAsanaWorkspaces = () => {
         return workspacesArr;
     });
 };
+
+export const fetchAllHerokuTeams = () => {
+    const herokuLinkedService = getConnectedServices(store.getState()).find((service)=>{
+        return service.name.toLowerCase() === "heroku"
+    });
+
+    return axios({
+        url: "https://api.heroku.com/teams",
+        method: "get",
+        headers: {
+            Authorization: `Bearer ${herokuLinkedService.token}`,
+            Accept: "application/vnd.heroku+json; version=3"
+        }
+    }).then((response)=>{
+        const teams = response.data;
+
+        store.dispatch(setHerokuTeamsList(teams));
+        return teams;
+    })
+}
