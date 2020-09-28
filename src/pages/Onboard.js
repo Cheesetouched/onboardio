@@ -54,7 +54,14 @@ const Onboard = (props) => {
         }));
       });
   }, []);
-  const { selectedFlow, onboardingEmails, error, isLoading } = state;
+  const {
+    selectedFlow,
+    onboardingEmails,
+    error,
+    isLoading,
+    selectFlowOptions,
+    done,
+  } = state;
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -67,7 +74,7 @@ const Onboard = (props) => {
 
     if (areAllEmailsValid && selectedFlow) {
       setState({ ...state, error: null });
-      onboard()
+      onboard(selectedFlow, onboardingEmails)
         .then((response) => {
           if (response.status === 200) {
             setState((state) => ({
@@ -113,8 +120,6 @@ const Onboard = (props) => {
       setState({ ...state, onboardingEmails: emails, error: null });
     }
   };
-
-  const { selectFlowOptions, done } = state;
 
   return (
     <>
