@@ -146,8 +146,7 @@ export class ServiceProviderService {
       })
         .then((res) => res.json())
         .then((response) => {
-          if (response.error)
-            reject({ code: 500, message: response.error_description });
+          if (response.error) reject({ code: 500, message: response.reason });
           else resolve(response.access_token);
         });
     });
