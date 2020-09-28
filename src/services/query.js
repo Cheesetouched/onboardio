@@ -1,7 +1,7 @@
 import axios from "axios";
 import { CLIENT_URL } from "../constants";
 
-export const sendCode = (service, code, token) => {
+export const sendCode = (service, code, token, accounts_server) => {
   let redirect_uri;
   redirect_uri = CLIENT_URL;
   redirect_uri = redirect_uri + `authorize/${service}`;
@@ -11,6 +11,7 @@ export const sendCode = (service, code, token) => {
     data: {
       code,
       redirect_uri,
+      accounts_server,
     },
     headers: {
       Authorization: token,
