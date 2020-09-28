@@ -6,10 +6,10 @@ import * as bodyParser from "body-parser";
 import * as bodyCleaner from "express-body-cleaner";
 import { AuthRoutes } from "./routes/auth";
 import { ServiceRoutes } from "./routes/service";
+import { FlowRoutes } from "./routes/flow";
 import { RequestLogger } from "./middlewares/requestLogger";
 import {CorsMiddleware} from "./middlewares/cors";
 import {AuthorizationChecker} from "./middlewares/authorizationChecker";
-import {FlowRoutes} from "./routes/flow";
 
 class App {
   public app: express.Application;

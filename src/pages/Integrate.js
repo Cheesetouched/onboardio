@@ -1,18 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
-import { Flex, Box, Button, Spinner } from "@chakra-ui/core";
-import { SiGithub, SiDiscord, SiHeroku, SiZoom, SiAsana } from "react-icons/si";
+import {
+  Flex,
+  Box,
+  Button,
+  Spinner,
+  Image,
+  useColorMode,
+} from "@chakra-ui/core";
+import { SiGithub, SiDiscord, SiHeroku, SiAsana } from "react-icons/si";
 import { CLIENT_URL, DISCORD_URL } from "../constants";
 
 import ErrorMessage from "../components/ErrorMessage";
 
 import { getServices } from "../services/query";
 
+import zohoLight from "../assets/zoho-light.png";
+import zohoDark from "../assets/zoho-dark.png";
+
 const Integrate = ({ token }) => {
   const [state, setState] = useState({
     GitHub: false,
-    Zoom: false,
+    Zoho: false,
     Discord: false,
     Asana: false,
     Heroku: false,
@@ -40,13 +50,13 @@ const Integrate = ({ token }) => {
       });
   }, []);
 
-  const { GitHub, Zoom, Discord, Asana, Heroku, error, isLoading } = state;
+  const { GitHub, Zoho, Discord, Asana, Heroku, error, isLoading } = state;
   const {
     REACT_APP_GITHUB_CLIENT_ID,
     REACT_APP_DISCORD_CLIENT_ID,
     REACT_APP_HEROKU_CLIENT_ID,
     REACT_APP_ASANA_CLIENT_ID,
-    REACT_APP_ZOOM_CLIENT_ID,
+    REACT_APP_ZOHO_CLIENT_ID,
     REACT_APP_ANTI_FORGERY,
   } = process.env;
 
@@ -70,10 +80,10 @@ const Integrate = ({ token }) => {
             url={`https://github.com/login/oauth/authorize?scope=admin:org&client_id=${REACT_APP_GITHUB_CLIENT_ID}`}
           />
           <IntegrationCard
-            text={SiZoom}
-            active={Zoom}
-            label="Zoom"
-            url={`https://zoom.us/oauth/authorize?response_type=code&client_id=${REACT_APP_ZOOM_CLIENT_ID}&redirect_uri=${CLIENT_URL}authorize/zoom`}
+            text={Zoho}
+            active={Zoho}
+            label="Zoho"
+            url={`https://accounts.zoho.com/oauth/v2/auth?scope=ZohoCRM.org.ALL&client_id=${REACT_APP_ZOHO_CLIENT_ID}&response_type=code&access_type=online&redirect_uri=${CLIENT_URL}authorize/zoho`}
           />
           <IntegrationCard
             text={SiDiscord}
@@ -99,31 +109,44 @@ const Integrate = ({ token }) => {
   );
 };
 
-const IntegrationCard = ({ text, active, url, color = null }) => (
-  <Box
-    p={4}
-    m={3}
-    maxWidth="350px"
-    borderWidth={1}
-    borderRadius={8}
-    boxShadow="lg"
-    width="full"
-  >
-    <Flex align="center" justifyContent="space-between">
-      <Box as={text} size="64px" color={color} />
-      <a href={url}>
-        <Button
-          mt={4}
-          type="submit"
-          variantColor={active ? "green" : "teal"}
-          variant={active ? "solid" : "outline"}
-        >
-          {active ? "Connected" : "Connect"}
-        </Button>
-      </a>
-    </Flex>
-  </Box>
-);
+const IntegrationCard = ({ text, active, url, label, color = null }) => {
+  const { colorMode } = useColorMode();
+
+  return (
+    <Box
+      p={4}
+      m={3}
+      maxWidth="500px"
+      borderWidth={1}
+      borderRadius={8}
+      boxShadow="lg"
+      width="full"
+    >
+      <Flex align="center" justifyContent="space-between">
+        {label === "Zoho" ? (
+          <Image
+            src={colorMode === "light" ? zohoLight : zohoDark}
+            alt="Zoho"
+            height="35px"
+            fallbackSrc="https://via.placeholder.com/35"
+          />
+        ) : (
+          <Box as={text} size="64px" color={color} />
+        )}
+        <a href={url}>
+          <Button
+            mt={4}
+            type="submit"
+            variantColor={active ? "green" : "teal"}
+            variant={active ? "solid" : "outline"}
+          >
+            {active ? "Connected" : "Connect"}
+          </Button>
+        </a>
+      </Flex>
+    </Box>
+  );
+};
 
 const mapStateToProps = (state) => {
   const { user } = state;

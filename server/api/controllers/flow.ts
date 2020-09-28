@@ -6,10 +6,10 @@ export class FlowController {
     public create(req: UserInfoRequest, res: Response) {
         const {flowName, services} = req.body;
         return FlowService.createFlow(flowName, services, req.userInfo)
-            .then((result : any) => {
+            .then((result: any) => {
                 return res
                     .status(result.code)
-                    .send({ status: "FLOW_CREATED"});
+                    .send({status: "FLOW_CREATED"});
             }).catch(err => {
                 return res
                     .status(err.code)
@@ -17,7 +17,7 @@ export class FlowController {
             })
     }
 
-    public getList(req: UserInfoRequest, res: Response){
-        return req.userInfo.flows;
+    public getFlowsList(req: UserInfoRequest, res: Response) {
+        res.send(req.userInfo.flows);
     }
 }
