@@ -243,7 +243,8 @@ const CreateFlow = (props) => {
             alert("Created the flow");
             history.push(`/`);
         }).catch((err)=>{
-            setState({error: "Something went wrong while creating the flow."});
+            console.error(err);
+            setState({...state, error: "Something went wrong while creating the flow."});
         });
     };
 

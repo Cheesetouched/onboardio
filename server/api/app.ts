@@ -39,7 +39,7 @@ class App {
     this.app.use(bodyParser.urlencoded({ extended: false }));
     this.app.use(AuthorizationChecker);
     this.app.use("/v1/auth", this.authRouter);
-    this.app.use("/v1/flows", this.authRouter);
+    this.app.use("/v1/flows", this.flowRouter);
     this.app.use("/v1/services", this.serviceRouter);
   }
 
