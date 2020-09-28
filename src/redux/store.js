@@ -14,6 +14,6 @@ const composeEnhancers =
 
 const composedEnhancers = composeEnhancers(middlewareEnhancer)
 
-const store = createStore(rootReducer, {user: {isLoggedIn: false, token: null}}, composedEnhancers)
+const store = createStore(rootReducer, {user: {isLoggedIn: false, token: null, connectedServices: []}}, composedEnhancers)
 
 export { store };

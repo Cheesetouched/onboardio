@@ -18,7 +18,7 @@ const CodeHandler = ({ token }) => {
   const { code } = getQueryParams();
 
   useEffect(() => {
-    sendCode(service, code, token)
+    sendCode(service, code)
       .then(async (response) => {
         if (response.status === 200) {
           setState((state) => ({ ...state, isLoading: false, error: null }));
@@ -32,7 +32,7 @@ const CodeHandler = ({ token }) => {
           error: "Couldn't connect to the service!",
         }));
       });
-  }, [code, service, token]);
+  }, [code, service]);
   const { error, isLoading } = state;
   return (
     <Flex

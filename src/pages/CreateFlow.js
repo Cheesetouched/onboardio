@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {
   Box,
   Button,
@@ -12,6 +12,9 @@ import {
 } from "@chakra-ui/core";
 import ErrorMessage from "../components/ErrorMessage";
 import { MultiSelect } from "../components/MultiSelect";
+import {fetchConnectedServicesList} from "../services/flow";
+import {useSelector} from "react-redux";
+import {getConnectedServices} from "../redux/stateUtils/user";
 
 const STEPS = {
   CREATE_FLOW_FORM: "CREATE_FLOW_FORM",
@@ -31,14 +34,11 @@ const CreateFlow = (props) => {
     error: null,
   });
 
-  // THis will need to be fetched from backend.
-  const servicesAvailable = [
-    { name: "Github", id: 1 },
-    { name: "MongoDb", id: 2 },
-    { name: "Discord", id: 3 },
-    { name: "Trello", id: 4 },
-    { name: "Heroku", id: 5 },
-  ];
+  const servicesAvailable = useSelector(getConnectedServices);
+
+  useEffect(()=>{
+    fetchConnectedServicesList();
+  }, [])
 
   const serviceOptions = servicesAvailable.map((service) => {
     return { label: service.name, value: service.id };
