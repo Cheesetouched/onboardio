@@ -9,13 +9,16 @@ import { ServiceRoutes } from "./routes/service";
 import { RequestLogger } from "./middlewares/requestLogger";
 import {CorsMiddleware} from "./middlewares/cors";
 import {AuthorizationChecker} from "./middlewares/authorizationChecker";
+import {FlowRoutes} from "./routes/flow";
 
 class App {
   public app: express.Application;
   public mongourl: string;
   public auth: AuthRoutes = new AuthRoutes();
+  private flow: FlowRoutes = new FlowRoutes();
   public service: ServiceRoutes = new ServiceRoutes();
   public authRouter: express.Router = express.Router();
+  public flowRouter: express.Router = express.Router();
   public serviceRouter: express.Router = express.Router();
 
   constructor() {
@@ -23,6 +26,7 @@ class App {
     this.app = express();
     this.config();
     this.auth.routes(this.authRouter);
+    this.flow.routes(this.flowRouter);
     this.service.routes(this.serviceRouter);
     this.mongoSetup();
   }
@@ -35,6 +39,7 @@ class App {
     this.app.use(bodyParser.urlencoded({ extended: false }));
     this.app.use(AuthorizationChecker);
     this.app.use("/v1/auth", this.authRouter);
+    this.app.use("/v1/flows", this.authRouter);
     this.app.use("/v1/services", this.serviceRouter);
   }
 
