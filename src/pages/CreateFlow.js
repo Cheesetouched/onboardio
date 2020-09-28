@@ -25,6 +25,7 @@ import {
     fetchAvailableGithubOrganizations
 } from "../services/serviceProviders";
 import {getAsanaWorkspacesList, getGithubOrganizationsList, getHerokuTeamsList} from "../redux/stateUtils/services";
+import {withRouter} from "react-router-dom";
 
 const FORMS = {
     CREATE_FLOW_FORM: "CREATE_FLOW_FORM",
