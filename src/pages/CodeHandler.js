@@ -34,7 +34,7 @@ const CodeHandler = ({ token }) => {
           error: "Couldn't connect to the service!",
         }));
       });
-  }, [code, service]);
+  }, [code, service, accounts_server]);
   const { error, isLoading } = state;
   return (
     <Flex
