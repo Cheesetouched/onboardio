@@ -9,7 +9,7 @@ const Dashboard = () => {
       align="center"
       justifyContent="center"
       direction="column"
-      height="80vh"
+      height="60vh"
     >
       <Box>
         <Heading m={50}>
