@@ -83,7 +83,7 @@ const Integrate = ({ token }) => {
             text={Zoho}
             active={Zoho}
             label="Zoho"
-            url={`https://accounts.zoho.com/oauth/v2/auth?scope=ZohoCRM.org.ALL&client_id=${REACT_APP_ZOHO_CLIENT_ID}&response_type=code&access_type=online&redirect_uri=${CLIENT_URL}authorize/zoho`}
+            url={`https://accounts.zoho.com/oauth/v2/auth?scope=ZohoCRM.modules.ALL,ZohoCRM.settings.ALL,ZohoCRM.org.ALL,ZohoCRM.users.ALL&client_id=${REACT_APP_ZOHO_CLIENT_ID}&response_type=code&access_type=online&redirect_uri=${CLIENT_URL}authorize/zoho`}
           />
           <IntegrationCard
             text={SiDiscord}
