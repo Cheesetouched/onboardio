@@ -17,7 +17,8 @@ const CodeHandler = ({ token }) => {
 
   const params = getQueryParams();
   const code = params.code;
-  const accounts_server = params["accounts-server"];
+  let accounts_server = params["accounts-server"];
+  accounts_server = decodeURI(accounts_server);
   useEffect(() => {
     sendCode(service, code, token, accounts_server)
       .then(async (response) => {
