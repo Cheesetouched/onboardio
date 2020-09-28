@@ -66,6 +66,7 @@ const Integrate = ({ token }) => {
       align="center"
       justifyContent="center"
       direction="column"
+      height="80vh"
     >
       {error ? (
         <ErrorMessage message={error} />
