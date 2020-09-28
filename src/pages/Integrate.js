@@ -83,13 +83,13 @@ const Integrate = ({ token }) => {
             text={Zoho}
             active={Zoho}
             label="Zoho"
-            url={`https://accounts.zoho.com/oauth/v2/auth?scope=ZohoCRM.org.ALL&client_id=${REACT_APP_ZOHO_CLIENT_ID}&response_type=code&access_type=online&redirect_uri=${CLIENT_URL}authorize/zoho`}
+            url={`https://accounts.zoho.com/oauth/v2/auth?scope=ZohoCRM.modules.ALL,ZohoCRM.settings.ALL,ZohoCRM.org.ALL,ZohoCRM.users.ALL&client_id=${REACT_APP_ZOHO_CLIENT_ID}&response_type=code&access_type=online&redirect_uri=${CLIENT_URL}authorize/zoho`}
           />
           <IntegrationCard
             text={SiDiscord}
             active={Discord}
             label="Discord"
-            url={`https://discord.com/api/oauth2/authorize?client_id=${REACT_APP_DISCORD_CLIENT_ID}&redirect_uri=${DISCORD_URL}authorize%2Fdiscord&response_type=code&scope=guilds.join`}
+            url={`https://discord.com/api/oauth2/authorize?client_id=${REACT_APP_DISCORD_CLIENT_ID}&redirect_uri=${DISCORD_URL}authorize%2Fdiscord&response_type=code&scope=identify%20guilds%20guilds.join%20connections%20email%20relationships.read%20activities.read%20activities.write`}
           />
           <IntegrationCard
             text={SiAsana}
