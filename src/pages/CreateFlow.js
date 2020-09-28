@@ -13,10 +13,20 @@ import {
 import ErrorMessage from "../components/ErrorMessage";
 import { MultiSelect } from "../components/MultiSelect";
 
+const STEPS = {
+  CREATE_FLOW_FORM: "CREATE_FLOW_FORM",
+  GITHUB_USER_INPUT_FORM: "GITHUB_USER_INPUT_FORM",
+  ASANA_USER_INPUT_FORM: "ASANA_USER_INPUT_FORM",
+  DISCORD_USER_INPUT_FORM: "DISCORD_USER_INPUT_FORM",
+  HEROKU_USER_INPUT_FORM: "HEROKU_USER_INPUT_FORM"
+};
+
 const CreateFlow = (props) => {
   const [state, setState] = useState({
     flowName: "",
     selectedServices: [],
+    servicesInputs: {},
+    currentStep: STEPS.CREATE_FLOW_FORM,
     isLoading: false,
     error: null,
   });
