@@ -156,4 +156,34 @@ export class ServiceController {
           .send({ status: "FAILED_TO_LINK_ZOOM", message: err.message });
       });
   }
+
+  public linkZoho(req: UserInfoRequest, res: Response) {
+    const { code, redirect_uri, accounts_server } = req.body;
+
+    ServiceProviderService.linkZoho(code, redirect_uri, accounts_server)
+      .then((accessToken) => {
+        ServiceProviderService.saveService({
+          email: req.userInfo.email,
+          name: "Zoho",
+          token: accessToken,
+        })
+          .then((result) => {
+            return res.send({
+              status: "SAVED_ZOHO_SERVICE",
+              message: result,
+            });
+          })
+          .catch((err) => {
+            return res.status(err.code).send({
+              status: "FAILED_TO_SAVE_ZOHO_SERVICE",
+              message: err.message,
+            });
+          });
+      })
+      .catch((err) => {
+        return res
+          .status(err.code)
+          .send({ status: "FAILED_TO_LINK_ZOHO", message: err.message });
+      });
+  }
 }

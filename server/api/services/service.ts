@@ -151,4 +151,20 @@ export class ServiceProviderService {
         });
     });
   }
+
+  static linkZoho(code: string, redirect_uri: string, accounts_server: string) {
+    return new Promise((resolve, reject) => {
+      const zohoExchange =
+        accounts_server +
+        process.env.ZOHO_TOKEN_EXCHANGE_URL +
+        `?code=${code}&redirect_uri=${redirect_uri}&client_id=${process.env.ZOHO_CLIENT_ID}&client_secret=${process.env.ZOHO_CLIENT_SECRET}&grant_type=authorization_code`;
+
+      fetch(zohoExchange, { method: "post" })
+        .then((res) => res.json())
+        .then((response) => {
+          if (response.error) reject({ code: 500, message: response.error });
+          else resolve(response.access_token);
+        });
+    });
+  }
 }
