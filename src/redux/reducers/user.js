@@ -1,5 +1,5 @@
 import { LOGIN_USER, SIGN_OUT_USER } from "../actions/auth";
-import {SAVE_CONNECTED_SERVICES} from "../actions/user";
+import {SAVE_CONNECTED_SERVICES} from "../actions/services";
 
 const initialState = {
   isLoggedIn: false,

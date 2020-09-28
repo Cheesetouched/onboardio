@@ -1,6 +1,6 @@
 import axios from "axios";
 import {store} from "../redux/store";
-import {saveConnectedServices} from "../redux/actions/user";
+import {saveConnectedServices} from "../redux/actions/services";
 
 export const fetchConnectedServicesList = () =>{
     return axios({
@@ -8,9 +8,7 @@ export const fetchConnectedServicesList = () =>{
         method: "get"
     }).then((response)=>{
         const connectedServices = response.data;
-        if(!Array.isArray(connectedServices)) {
-            throw new Error("Invalid response");
-        }
+
         store.dispatch(saveConnectedServices(connectedServices));
         return response.data;
     }).catch((error)=>{
