@@ -15,3 +15,17 @@ export const fetchConnectedServicesList = () =>{
         return error.response.data;
     });
 }
+
+export const createFlow = (flowName, selectedServices, meta) => {
+    return axios({
+        url: `/v1/flows/create`,
+        method: "post",
+        data: {
+            flowName,
+            services: selectedServices,
+            meta
+        }
+    }).then((response)=>{
+        return true;
+    });
+};

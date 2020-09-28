@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/core";
 import ErrorMessage from "../components/ErrorMessage";
 import {MultiSelect} from "../components/MultiSelect";
-import {fetchConnectedServicesList} from "../services/flow";
+import {createFlow, fetchConnectedServicesList} from "../services/flow";
 import {useSelector} from "react-redux";
 import {getConnectedServices} from "../redux/stateUtils/user";
 import {
@@ -127,14 +127,8 @@ const ServiceInputForm = (props) => {
                 <>
                     <FormControl isRequired>
                         <FormLabel mt={4} mb={2}>
-                            Select your Github organization
+                            Select your Discord Guild
                         </FormLabel>
-                        <MultiSelect
-                            onChange={() => {
-                            }}
-                            options={organizationsOptions}
-                            placeholder={"Select your organizations"}
-                        />
                     </FormControl>
                 </>
             );
@@ -214,6 +208,8 @@ const ServiceInputForm = (props) => {
 };
 
 const CreateFlow = (props) => {
+    const {history} = props;
+
     const [state, setState] = useState({
         flowName: "",
         selectedServices: [],
@@ -238,7 +234,16 @@ const CreateFlow = (props) => {
 
     const submitForm = () => {
         setState({...state, error: null});
-        alert(`Creating a flow now`);
+        const selectedServicesIds = selectedServices.map((serviceOption)=>{
+            return serviceOption.value
+        });
+
+        createFlow(flowName, selectedServicesIds, servicesInputs).then(r => {
+            alert("Created the flow");
+            history.push(`/`);
+        }).catch((err)=>{
+            setState({error: "Something went wrong while creating the flow."});
+        });
     };
 
     const updateServiceInputs = (service, values) => {
@@ -391,16 +396,18 @@ const CreateFlow = (props) => {
                                 </Button>
                             </form>
                         </Box>
-                    ) : (<ServiceInputForm
+                    ) : (
+                        <ServiceInputForm
                         updateServiceInputsCallback={updateServiceInputs}
                         servicesInputs={servicesInputs}
                         isLastForm={isLastForm}
                         goToNextFormCallback={goToNextForm}
-                        formType={currentForm}/>)}
+                        formType={currentForm}/>)
+                    }
                 </Box>
             </Box>
         </Flex>
     );
 };
 
-export default CreateFlow;
+export default withRouter(CreateFlow);
