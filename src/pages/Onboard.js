@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Redirect } from "react-router-dom";
 import {
   Box,
   Button,
@@ -16,23 +17,44 @@ import { SingleSelect } from "../components/SingleSelect";
 import { CreatableMultiValueInput } from "../components/CreatableMultiValueInput";
 import { isEmailValid } from "../utils/email";
 
+import { getFlow, onboard } from "../services/flow";
+
 const Onboard = (props) => {
   const [state, setState] = useState({
     selectedFlow: null,
-    isLoading: false,
+    isLoading: true,
     onboardingEmails: null,
     error: null,
+    selectFlowOptions: [],
+    done: false,
   });
 
+  useEffect(() => {
+    getFlow()
+      .then((response) => {
+        let data = [];
+        response = response.data;
+        response.forEach((e) =>
+          data.push({
+            label: e.name,
+            value: e._id,
+          })
+        );
+        setState((state) => ({
+          ...state,
+          error: null,
+          isLoading: false,
+          selectFlowOptions: data,
+        }));
+      })
+      .catch((err) => {
+        setState((state) => ({
+          ...state,
+          error: "Couldn't connect to the service!",
+        }));
+      });
+  }, []);
   const { selectedFlow, onboardingEmails, error, isLoading } = state;
-
-  const selectFlowOptions = [
-    { label: "Software Intern", value: 1 },
-    { label: "Senior Backend Engineer", value: 2 },
-    { label: "Senior Frontend Engineer", value: 3 },
-    { label: "Junior Backend Engineer", value: 4 },
-    { label: "Junior Frontend Engineer", value: 5 },
-  ];
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -45,7 +67,25 @@ const Onboard = (props) => {
 
     if (areAllEmailsValid && selectedFlow) {
       setState({ ...state, error: null });
-      alert("Onboarding the users");
+      onboard()
+        .then((response) => {
+          if (response.status === 200) {
+            setState((state) => ({
+              ...state,
+              isLoading: false,
+              error: null,
+              done: true,
+            }));
+          } else {
+            setState((state) => ({ ...state, error: response.message }));
+          }
+        })
+        .catch((err) => {
+          setState((state) => ({
+            ...state,
+            error: "Couldn't connect to the service!",
+          }));
+        });
     } else {
       setState({
         ...state,
@@ -74,61 +114,75 @@ const Onboard = (props) => {
     }
   };
 
+  const { selectFlowOptions, done } = state;
+
   return (
-    <Flex width="full" align="center" justifyContent="center">
-      <Box
-        p={8}
-        maxWidth="500px"
-        width={440}
-        borderWidth={1}
-        borderRadius={8}
-        boxShadow="lg"
-        mt={10}
-      >
-        <Box p={2} pb={0}>
-          {/* Onboard Page */}
-          <Box textAlign="center">
-            <Heading>Onboard Users</Heading>
-          </Box>
-          <Box my={8} mb={4} textAlign="left">
-            <form onSubmit={handleSubmit}>
-              {error ? <ErrorMessage message={error} /> : null}
-              <FormControl isRequired>
-                <FormLabel>Select Flow</FormLabel>
-                <SingleSelect
-                  onChange={handleOnboardFlowChange}
-                  options={selectFlowOptions}
-                  value={selectedFlow}
-                />
-              </FormControl>
-              <FormControl isRequired>
-                <FormLabel mt={4} mb={2}>
-                  Email addresses
-                </FormLabel>
-                <CreatableMultiValueInput
-                  onChange={handleEmailAddressChange}
-                  values={onboardingEmails}
-                  placeholder={"Enter email addresses"}
-                />
-              </FormControl>
-              <Button
-                width="full"
-                mt={8}
-                type="submit"
-                variantColor="teal"
-                variant="outline"
-              >
-                {isLoading ? (
-                  <CircularProgress isIndeterminate size="24px" color="teal" />
-                ) : (
-                  "Onboard"
-                )}
-              </Button>
-            </form>
-          </Box>
-        </Box>
-      </Box>
-    </Flex>
+    <>
+      {done ? (
+        <Redirect to="/" />
+      ) : (
+        <>
+          <Flex width="full" align="center" justifyContent="center">
+            <Box
+              p={8}
+              maxWidth="500px"
+              width={440}
+              borderWidth={1}
+              borderRadius={8}
+              boxShadow="lg"
+              mt={10}
+            >
+              <Box p={2} pb={0}>
+                {/* Onboard Page */}
+                <Box textAlign="center">
+                  <Heading>Onboard Users</Heading>
+                </Box>
+                <Box my={8} mb={4} textAlign="left">
+                  <form onSubmit={handleSubmit}>
+                    {error ? <ErrorMessage message={error} /> : null}
+                    <FormControl isRequired>
+                      <FormLabel>Select Flow</FormLabel>
+                      <SingleSelect
+                        onChange={handleOnboardFlowChange}
+                        options={selectFlowOptions}
+                        value={selectedFlow}
+                      />
+                    </FormControl>
+                    <FormControl isRequired>
+                      <FormLabel mt={4} mb={2}>
+                        Email addresses
+                      </FormLabel>
+                      <CreatableMultiValueInput
+                        onChange={handleEmailAddressChange}
+                        values={onboardingEmails}
+                        placeholder={"Enter email addresses"}
+                      />
+                    </FormControl>
+                    <Button
+                      width="full"
+                      mt={8}
+                      type="submit"
+                      variantColor="teal"
+                      variant="outline"
+                    >
+                      {isLoading ? (
+                        <CircularProgress
+                          isIndeterminate
+                          size="24px"
+                          color="teal"
+                        />
+                      ) : (
+                        "Onboard"
+                      )}
+                    </Button>
+                  </form>
+                </Box>
+              </Box>
+            </Box>
+          </Flex>
+        </>
+      )}
+    </>
   );
 };
 

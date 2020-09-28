@@ -31,3 +31,21 @@ export const createFlow = (flowName, selectedServices, meta) => {
     return true;
   });
 };
+
+export const getFlow = () => {
+  return axios({
+    url: `/v1/flows`,
+    method: "get",
+  });
+};
+
+export const onboard = (flowId, emails) => {
+  return axios({
+    url: `/v1/onboard`,
+    method: "post",
+    data: {
+      flowId,
+      emails,
+    },
+  });
+};
