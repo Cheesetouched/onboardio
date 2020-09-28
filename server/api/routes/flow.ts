@@ -7,5 +7,6 @@ export class FlowRoutes {
   public routes(app): void {
     app.use(StrictlyAuthorizedRoutes);
     app.route("/").get(this.flow.getFlows);
+    app.route("/").post(this.flow.createFlow);
   }
 }

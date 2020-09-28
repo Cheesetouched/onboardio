@@ -18,6 +18,10 @@ let flow = Schema({
     type: String,
     required: true,
   },
+  meta: {
+    type: Object,
+    required: false
+  },
   services: [Schema.Types.ObjectId],
 });
 

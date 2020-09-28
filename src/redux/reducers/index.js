@@ -1,8 +1,10 @@
 import user from "./user";
+import services from "./services";
 import { combineReducers } from "@reduxjs/toolkit";
 
 const combinedReducer = combineReducers({
-    user
+    user,
+    services
 });
 
 const rootReducer = (state, action) => {

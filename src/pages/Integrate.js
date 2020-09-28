@@ -31,7 +31,7 @@ const Integrate = ({ token }) => {
   });
 
   useEffect(() => {
-    getServices(token)
+    getServices()
       .then(async (response) => {
         response = response.data;
         response.forEach((element) => {

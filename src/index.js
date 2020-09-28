@@ -16,6 +16,7 @@ function setUserLoginState() {
   const token = window.localStorage.getItem("token");
 
   if (token) {
+    axios.defaults.headers["Authorization"] = token;
     store.dispatch(loginUser(true, token));
   } else {
     store.dispatch(loginUser(false, null));

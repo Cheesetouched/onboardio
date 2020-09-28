@@ -20,7 +20,7 @@ const CodeHandler = ({ token }) => {
   let accounts_server = params["accounts-server"];
   accounts_server = decodeURI(accounts_server);
   useEffect(() => {
-    sendCode(service, code, token, accounts_server)
+    sendCode(service, code, accounts_server)
       .then(async (response) => {
         if (response.status === 200) {
           setState((state) => ({ ...state, isLoading: false, error: null }));
@@ -34,7 +34,7 @@ const CodeHandler = ({ token }) => {
           error: "Couldn't connect to the service!",
         }));
       });
-  }, [code, service, token, accounts_server]);
+  }, [code, service, accounts_server]);
   const { error, isLoading } = state;
   return (
     <Flex

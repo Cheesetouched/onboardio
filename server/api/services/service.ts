@@ -67,7 +67,7 @@ export class ServiceProviderService {
       params.append("grant_type", "authorization_code");
       params.append("redirect_uri", redirect_uri);
       params.append("code", code);
-      params.append("scope", process.env.DISCORD_SCOPE);
+      params.append("scope", process.env.DISCORD_SCOPE.replace(/\,/g, "%20"));
 
       fetch(process.env.DISCORD_TOKEN_EXCHANGE_URL, {
         method: "post",
