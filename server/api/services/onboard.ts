@@ -30,21 +30,32 @@ function sendHerokuInvite() {
 
 function sendZohoInvite(emails, token, meta) {
     return new Promise((resolve, reject) => {
-        const randomNamesArr = ['John Doe','Luis Smith', 'Dark Lord'];
+        const randomNamesArr = ['John Doe', 'Luis Smith', 'Dark Lord'];
         const userName = randomNamesArr[Math.floor(Math.random() * randomNamesArr.length)];
         const userFirstName = userName.split(" ")[0];
         const userLastName = userName.split(" ")[1];
 
         const usersArr = emails.map(email => {
             return {
-                "role": meta["zoho"].role.value,
+                "role": parseInt(meta["zoho"].role.value),
                 "first_name": userFirstName,
-                "email": email,
-                "profile": meta["zoho"].profile.value,
+                "email": email.value,
+                "profile": parseInt(meta["zoho"].profile.value),
                 "last_name": userLastName
             };
         });
-
+        console.log({
+            url: `https://www.zohoapis.in/crm/v2/users`,
+         data: {
+            method: "post",
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            data: {
+                users: JSON.stringify(usersArr)
+            }
+        }
+        });
         return fetch(`https://www.zohoapis.com/crm/v2/users`, {
             method: "post",
             headers: {
@@ -60,7 +71,10 @@ function sendZohoInvite(emails, token, meta) {
                     reject({code: 500, message: response.error});
                 }
                 resolve(response);
+            }).catch((err)=>{
+                reject({code: 500, message: err});
             });
+
     });
 }
 
@@ -69,30 +83,11 @@ export class OnboardService {
         return new Promise(async (resolve) => {
             let report = [];
             let promiseArray = [];
-
-            flow.services.forEach((flowService) => {
-                services.forEach((service) => {
-                    if (flowService == service.id) {
-                        if (service.name == "Asana") promiseArray.push(sendAsanaInvite());
-                        if (service.name == "Discord")
-                            promiseArray.push(sendDiscordInvite());
-                        if (service.name == "GitHub") promiseArray.push(sendGitHubInvite());
-                        if (service.name == "Heroku") promiseArray.push(sendHerokuInvite());
-                        if (service.name == "Zoho") promiseArray.push(sendZohoInvite(emails, service.token, flow.meta));
-                    }
-                });
+            services.forEach((service) => {
+                if (service.name == "Zoho") promiseArray.push(sendZohoInvite(emails, service.token, flow.meta));
+                    
             });
-
-            emails.forEach((email, index) => {
-                Promise.all(promiseArray).then((result) => {
-                    report.push({
-                        email: email,
-                        result: result,
-                    });
-                    console.log("Something is going on", result, email);
-                    if (index == emails.length - 1) resolve(report);
-                });
-            });
+            return Promise.all(promiseArray);
         });
     }
 }
