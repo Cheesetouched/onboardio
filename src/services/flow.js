@@ -39,12 +39,12 @@ export const getFlow = () => {
   });
 };
 
-export const onboard = (flowId, emails) => {
+export const onboard = (flow, emails) => {
   return axios({
     url: `/v1/onboard`,
     method: "post",
     data: {
-      flowId,
+      flow,
       emails,
     },
   });

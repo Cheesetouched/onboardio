@@ -52,6 +52,7 @@ function sendZohoInvite() {
 
 export class OnboardService {
   static onboardUsers(services: any, flows: any, emails: string) {
+    console.log(services, flows, emails);
     return new Promise(async (resolve) => {
       let report = [];
       let promiseArray = [];
