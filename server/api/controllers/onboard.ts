@@ -11,7 +11,7 @@ export class OnboardController {
         return res.send({ status: "ONBOARDING_SUCESSFUL", report: result });
       })
       .catch((err) => {
-        return res.send({ status: "FAILED_TO_ONBOARD", message: err.message });
+        return res.status(500).send({ status: "FAILED_TO_ONBOARD" });
       });
   }
 }
