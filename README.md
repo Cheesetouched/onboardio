@@ -34,7 +34,8 @@ Onboard.io uses a React frontend paired with redux for state management. The bac
 ### Stack Used
 
 React (Frontend).
-Node[typescript+express] (Backend)
+Node[typescript+express] (Backend).
+Heroku (Deployment).
 
 ### HOW TO SETUP:
 
@@ -43,7 +44,9 @@ git clone https://github.com/MLH-Fellowship/onboardio.git
 ```
 
 ```
-[Frontend + Backend]: yarn install, yarn start:app [Runs the app in dev mode port:3000, with server on port:8080], yarn test [Testing]
+[Frontend + Backend]: yarn install,
+                      yarn start:app [Runs the app in dev mode port:3000, with server on port:8080],
+                      yarn test [Testing]
 ```
 
 
