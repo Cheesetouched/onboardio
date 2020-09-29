@@ -1,85 +1,81 @@
 import * as fetch from "node-fetch";
-import * as mongoose from "mongoose";
 import { URLSearchParams } from "url";
-import { UserModel } from "../models/user";
 
-const User = mongoose.model("User", UserModel);
-
-function sendAsanaInvite() {
-  return new Promise((resolve, reject) => {
-    resolve(true);
-  });
-}
-
-function sendDiscordInvite() {
-  return new Promise((resolve, reject) => {
-    reject("403: Forbidden");
-  });
-}
-
-function sendGitHubInvite() {
-  return new Promise((resolve, reject) => {
-    resolve(true);
-  });
-}
-
-function sendHerokuInvite(herokuToken, email, team) {
+function sendHerokuInvite(email, team, token) {
   return new Promise((resolve, reject) => {
     const params = new URLSearchParams();
     params.append("email", email);
     params.append("role", "member");
+
     fetch(`https://api.heroku.com/teams/${team}/invitations`, {
       method: "put",
       headers: {
         Accept: "application/vnd.heroku+json; version=3",
-        Authorization: `Bearer ${herokuToken}`,
+        Authorization: `Bearer ${token}`,
       },
       body: params,
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.status == 200) return res.json();
+        else
+          reject({
+            service: "Heroku",
+            code: 500,
+            message: "Couldn't invite to Heroku",
+          });
+      })
       .then((response) => {
-        console.log(response);
-        resolve({ heroku: true });
+        if (response) resolve({ service: "Heroku", status: true });
       });
   });
 }
 
-function sendZohoInvite() {
-  return new Promise((resolve, reject) => {
-    reject("Access token expired");
-  });
-}
-
 export class OnboardService {
-  static onboardUsers(services: any, flows: any, emails: string) {
+  static onboardUsers(
+    flowId: string,
+    email: string,
+    services: any,
+    flows: any
+  ) {
     return new Promise(async (resolve) => {
-      let report = [];
+      let selectedFlow;
       let promiseArray = [];
 
-      flows.services.forEach((flow) => {
+      flows.forEach((flow) => {
+        if (flowId == flow._id) selectedFlow = flow;
+      });
+
+      selectedFlow.services.forEach((selectedService) => {
         services.forEach((service) => {
-          if (flow == service.id) {
-            if (service.name == "Asana") promiseArray.push(sendAsanaInvite());
-            if (service.name == "Discord")
-              promiseArray.push(sendDiscordInvite());
-            if (service.name == "GitHub") promiseArray.push(sendGitHubInvite());
+          if (selectedService.toString() == service._id.toString()) {
             if (service.name == "Heroku")
               promiseArray.push(
                 sendHerokuInvite(
-                  service.token,
-                  emails,
-                  flows.meta.heroku.teams[0].label
+                  email,
+                  selectedFlow.meta.heroku.teams[0].label,
+                  service.token
                 )
               );
-            if (service.name == "Zoho") promiseArray.push(sendZohoInvite());
           }
         });
       });
 
       Promise.allSettled(promiseArray).then((result) => {
-        report.push({
-          email: emails,
-          result: result,
+        let report = [];
+
+        result.forEach((serviceResult: any) => {
+          if (serviceResult.status == "fulfilled") {
+            let obj = {};
+            obj["service"] = serviceResult.value.service;
+            obj["inviteSent"] = serviceResult.value.status;
+            report.push(obj);
+          } else {
+            let obj = {};
+            obj["service"] = serviceResult.reason.service;
+            obj["inviteSent"] = false;
+            obj["error"] = serviceResult.reason.message;
+            report.push(obj);
+          }
         });
         resolve(report);
       });
