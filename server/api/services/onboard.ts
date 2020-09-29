@@ -84,7 +84,7 @@ export class OnboardService {
             });
 
             emails.forEach((email, index) => {
-                Promise.allSettled(promiseArray).then((result) => {
+                Promise.all(promiseArray).then((result) => {
                     report.push({
                         email: email,
                         result: result,
