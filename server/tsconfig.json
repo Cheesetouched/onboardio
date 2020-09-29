@@ -6,7 +6,8 @@
     "sourceMap": true,
     "target": "es6",
     "outDir": "./dist",
-    "baseUrl": "./api"
+    "baseUrl": "./api",
+    "lib": ["ES2020.Promise"]
   },
   "include": ["api/**/*.ts"],
   "exclude": ["node_modules"]

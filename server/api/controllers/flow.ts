@@ -4,8 +4,8 @@ import { FlowService } from "../services/flow";
 
 export class FlowController {
   public createFlow(req: UserInfoRequest, res: Response) {
-    const { flowName, services, meta } = req.body;
-    return FlowService.createFlow(flowName, services, meta, req.userInfo)
+    const { name, services, meta } = req.body;
+    return FlowService.createFlow(name, services, meta, req.userInfo)
       .then((result: any) => {
         return res.status(result.code).send({ status: "FLOW_CREATED" });
       })
