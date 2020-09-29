@@ -15,6 +15,7 @@ export const loginUserService = (email, password) => {
       const { status, token, message } = response.data;
       if (status === "LOGGED_IN") {
         window.localStorage.setItem("token", token);
+        axios.defaults.headers["Authorization"] = token;
         store.dispatch(loginUser(true, token));
       }
 
@@ -37,6 +38,7 @@ export const registerUserService = (email, password) => {
     const { status, token, message } = response.data;
     if (status === "USER_REGISTERED") {
       window.localStorage.setItem("token", token);
+      axios.defaults.headers["Authorization"] = token;
       store.dispatch(loginUser(true, token));
     }
     return response.data;

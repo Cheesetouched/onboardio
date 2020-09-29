@@ -338,7 +338,7 @@ const CreateFlow = (props) => {
 
     const handleSelectedServicesChange = (value) => {
 
-        setState({...state, selectedServices: value, isLastForm: getServicesThatNeedExtraInput(value).length === 0});
+        setState({...state, selectedServices: value ? value : [], isLastForm: getServicesThatNeedExtraInput(value ? value : []).length === 0});
     };
 
     return (

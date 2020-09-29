@@ -10,16 +10,21 @@ export const fetchAvailableGithubOrganizations = () => {
     });
 
     return axios({
-        url: "https://api.github.com/user/orgs",
+        url: "https://api.github.com/user/memberships/orgs?state=active",
         headers: {
             Authorization: `token ${githubLinkedService.token}`
         }
     }).then(response => {
-        const organizations = response.data;
+        const memberships = response.data;
+        const filteredOrganizations = memberships.filter(membership => {
+            return membership.role === "admin";
+        }).map(membership => {
+            return membership.organization;
+        });
 
-        store.dispatch(setGithubOrganizationList(organizations));
+        store.dispatch(setGithubOrganizationList(filteredOrganizations));
 
-        return organizations;
+        return filteredOrganizations;
     });
 };
 
@@ -55,8 +60,11 @@ export const fetchAllHerokuTeams = () => {
         }
     }).then((response)=>{
         const teams = response.data;
+        const filteredTeams = teams.filter((team)=>{
+            return team.role === "admin";
+        });
 
-        store.dispatch(setHerokuTeamsList(teams));
+        store.dispatch(setHerokuTeamsList(filteredTeams));
         return teams;
     })
 }
