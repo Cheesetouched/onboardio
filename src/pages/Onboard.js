@@ -74,6 +74,7 @@ const Onboard = (props) => {
 
     if (areAllEmailsValid && selectedFlow) {
       setState({ ...state, error: null });
+      console.log(onboardingEmails[0]);
       onboard(selectedFlow, onboardingEmails[0])
         .then((response) => {
           if (response.status === 200) {
