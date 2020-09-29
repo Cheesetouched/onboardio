@@ -59,6 +59,33 @@ function sendHerokuInvite(email, team, token) {
   });
 }
 
+function sendGitHubInvite(email, team, token) {
+  return new Promise((resolve, reject) => {
+    fetch(`https://api.github.com/orgs/${team}/invitations`, {
+      method: "post",
+      headers: {
+        Authorization: `token ${token}`,
+      },
+      body: JSON.stringify({
+        email,
+      }),
+    })
+      .then(async (res) => {
+        console.log(await res.json());
+        if (res.status == 200) return res.json();
+        else
+          reject({
+            service: "GitHub",
+            code: 500,
+            message: "Couldn't invite to GitHub",
+          });
+      })
+      .then((response) => {
+        if (response) resolve({ service: "GitHub", status: true });
+      });
+  });
+}
+
 export class OnboardService {
   static onboardUsers(
     flowId: string,
@@ -85,6 +112,14 @@ export class OnboardService {
                   service.token
                 )
               );
+              if (service.name == "GitHub")
+                promiseArray.push(
+                  sendGitHubInvite(
+                    email,
+                    selectedFlow.meta.github.organizations[0].label,
+                    service.token
+                  )
+                );
             }
             if (service.name == "Asana") {
               promiseArray.push(
