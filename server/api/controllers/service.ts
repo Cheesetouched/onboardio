@@ -186,4 +186,28 @@ export class ServiceController {
           .send({ status: "FAILED_TO_LINK_ZOHO", message: err.message });
       });
   }
+
+  public getZohoProfiles(req: UserInfoRequest, res: Response){
+      const {token} = req.body;
+      return ServiceProviderService.getZohoProfiles(token)
+          .then((profilesResponse)=>{
+            res.send(profilesResponse)
+          }).catch(error=>{
+            res
+                .status(error.code)
+                .send({status: "CANT_FETCH_ZOHO_PROFILES", message: error.message});
+          });
+  }
+
+  public getZohoRoles(req: UserInfoRequest, res: Response){
+    const {token} = req.body;
+    return ServiceProviderService.getZohoRoles(token)
+        .then((rolesResponse)=>{
+          res.send(rolesResponse)
+        }).catch(error=>{
+          res
+              .status(error.code)
+              .send({status: "CANT_FETCH_ZOHO_ROLES", message: error.message});
+        });
+  }
 }

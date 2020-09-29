@@ -110,7 +110,7 @@ const ServiceInputForm = (props) => {
             case FORMS.HEROKU_USER_INPUT_FORM:
                 fetchAllHerokuTeams();
                 break;
-            case FORMS.ASANA_USER_INPUT_FORM:
+            case FORMS.ZOHO_USER_INPUT_FORM:
                 fetchAllZohoProfilesAndRoles();
                 break;
         }
@@ -179,12 +179,13 @@ const ServiceInputForm = (props) => {
             )
             break;
         case FORMS.ZOHO_USER_INPUT_FORM:
-            const zohoProfilesOptions = zohoProfiles.map(team => {
-                return {label: team.name, value: team.id}
+            const zohoProfilesOptions = zohoProfiles.map(profile => {
+                return {label: profile.display_label, value: profile.id}
             });
 
-            const zohoRolesOptions = zohoRoles.map(team => {
-                return {label: team.name, value: team.id}
+            const zohoRolesOptions = zohoRoles.map(role => {
+                const label = `${role.display_label}${role.admin_user ? `(admin)` : " "}`
+                return {label: label, value: role.id}
             });
 
             const handleZohoProfileChange = (value) => {

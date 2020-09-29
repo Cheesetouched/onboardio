@@ -14,5 +14,7 @@ export class ServiceRoutes {
     app.route("/asana/link").post(this.service.linkAsana);
     app.route("/zoom/link").post(this.service.linkZoom);
     app.route("/zoho/link").post(this.service.linkZoho);
+    app.route("/zoho/getProfiles").post(this.service.getZohoProfiles);
+    app.route("/zoho/getRoles").post(this.service.getZohoRoles);
   }
 }

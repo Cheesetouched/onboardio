@@ -14,8 +14,11 @@ const initialState = {
     },
     heroku: {
         teams: []
+    },
+    zoho: {
+        profiles: [],
+        roles: []
     }
-
 };
 
 const services = (state = initialState, action) => {
