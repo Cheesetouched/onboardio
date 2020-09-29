@@ -24,8 +24,14 @@ import {
     fetchAllHerokuTeams, fetchAllZohoProfilesAndRoles,
     fetchAvailableGithubOrganizations
 } from "../services/serviceProviders";
-import {getAsanaWorkspacesList, getGithubOrganizationsList, getHerokuTeamsList} from "../redux/stateUtils/services";
+import {
+    getAsanaWorkspacesList,
+    getGithubOrganizationsList,
+    getHerokuTeamsList, getZohoProfilesList,
+    getZohoRolesList
+} from "../redux/stateUtils/services";
 import {withRouter} from "react-router-dom";
+import {SingleSelect} from "../components/SingleSelect";
 
 const FORMS = {
     CREATE_FLOW_FORM: "CREATE_FLOW_FORM",
@@ -54,6 +60,8 @@ const ServiceInputForm = (props) => {
     const githubOrganizations = useSelector(getGithubOrganizationsList);
     const asanaWorkspaces = useSelector(getAsanaWorkspacesList);
     const herokuTeams = useSelector(getHerokuTeamsList);
+    const zohoRoles = useSelector(getZohoRolesList);
+    const zohoProfiles = useSelector(getZohoProfilesList);
 
     const {error, isLoading} = state;
 
@@ -71,8 +79,12 @@ const ServiceInputForm = (props) => {
                 }
                 break;
             case FORMS.DISCORD_USER_INPUT_FORM:
+
                 break;
             case FORMS.ZOHO_USER_INPUT_FORM:
+                if(!(servicesInputs["zoho"].role && servicesInputs["zoho"].profile)){
+                    return setState({...state, error: "Please select both the inputs"});
+                }
                 break;
             case FORMS.HEROKU_USER_INPUT_FORM:
                 if(!(servicesInputs["heroku"].teams && servicesInputs["heroku"].teams.length)){
@@ -167,25 +179,44 @@ const ServiceInputForm = (props) => {
             )
             break;
         case FORMS.ZOHO_USER_INPUT_FORM:
-            const herokuTeamsOptions = herokuTeams.map(team => {
+            const zohoProfilesOptions = zohoProfiles.map(team => {
                 return {label: team.name, value: team.id}
             });
 
-            const handleHerokuTeamSelectionChange = (values) => {
-                updateServiceInputsCallback("heroku", {teams: values});
+            const zohoRolesOptions = zohoRoles.map(team => {
+                return {label: team.name, value: team.id}
+            });
+
+            const handleZohoProfileChange = (value) => {
+                updateServiceInputsCallback("zoho", {profile: value});
+            }
+
+            const handleZohoRoleChange = (value) => {
+                updateServiceInputsCallback("zoho", {role: value});
             }
 
             renderedServiceForm = (
                 <>
                     <FormControl isRequired>
                         <FormLabel mt={4} mb={2}>
-                            Select your Heroku Teams
+                            Select your Zoho Profile
                         </FormLabel>
-                        <MultiSelect
-                            onChange={handleHerokuTeamSelectionChange}
-                            values={servicesInputs["heroku"] ? servicesInputs["heroku"]["teams"] : []}
-                            options={herokuTeamsOptions}
-                            placeholder={"Select your teams"}
+                        <SingleSelect
+                            onChange={handleZohoProfileChange}
+                            values={servicesInputs["zoho"] ? servicesInputs["zoho"]["profile"] : null}
+                            options={zohoProfilesOptions}
+                            placeholder={"Select your profile"}
+                        />
+                    </FormControl>
+                    <FormControl isRequired>
+                        <FormLabel mt={4} mb={2}>
+                            Select your Zoho Role
+                        </FormLabel>
+                        <SingleSelect
+                            onChange={handleZohoRoleChange}
+                            values={servicesInputs["zoho"] ? servicesInputs["zoho"]["role"] : null}
+                            options={zohoRolesOptions}
+                            placeholder={"Select your role"}
                         />
                     </FormControl>
                 </>
