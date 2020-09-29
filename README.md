@@ -23,6 +23,11 @@ Onboard.io helps admins and management teams quickly onboard their new hires. Lo
 6. Slack
 7. Discord
 
+
+### API Documentation
+
+Find the API documentation [here](https://documenter.getpostman.com/view/2238143/TVKHTadQ).
+
 ### How It Was Built
 
 Onboard.io uses a React frontend paired with redux for state management. The backend is a typescript+express web server. We use OAuth 2.0 for all our API connection needs.
