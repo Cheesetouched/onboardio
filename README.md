@@ -10,10 +10,8 @@ Onboard.io helps admins and management teams quickly onboard their new hires. Lo
 
 
 1. Github
-2. Zoho
-3. Discord
-4. Asana
-5. Heroku
+2. Asana
+3. Heroku
 
 
 ### Next Phase Supported Services
@@ -25,6 +23,8 @@ Onboard.io helps admins and management teams quickly onboard their new hires. Lo
 4. Trello
 5. Digital Ocean
 6. Slack
+7. Zoho
+8. Discord
 
 
 ### How It Was Built
