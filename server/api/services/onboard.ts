@@ -1,4 +1,5 @@
 import * as mongoose from "mongoose";
+import * as fetch from "node-fetch";
 import { UserModel } from "../models/user";
 
 const User = mongoose.model("User", UserModel);
@@ -15,9 +16,28 @@ function sendDiscordInvite() {
   });
 }
 
-function sendGitHubInvite() {
+function sendGitHubInvite(meta, emails, token) {
+  const orgId = meta.github.organisations[0].value;
+
   return new Promise((resolve, reject) => {
-    resolve({ github: true });
+    emails.forEach((email) => {
+      fetch(`https://api.github.com/orgs/${orgId}/invitations`, {
+        method: "post",
+        body: {
+          email,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((response) => {
+          if (response.error) {
+            reject({ code: 500, message: response.error });
+          }
+          resolve({ github: true });
+        });
+    });
   });
 }
 
@@ -46,7 +66,10 @@ export class OnboardService {
             if (service.name == "Asana") promiseArray.push(sendAsanaInvite());
             if (service.name == "Discord")
               promiseArray.push(sendDiscordInvite());
-            if (service.name == "GitHub") promiseArray.push(sendGitHubInvite());
+            if (service.name == "GitHub")
+              promiseArray.push(
+                sendGitHubInvite(flow.meta, emails, service.token)
+              );
             if (service.name == "Heroku") promiseArray.push(sendHerokuInvite());
             if (service.name == "Zoho") promiseArray.push(sendZohoInvite());
           }
