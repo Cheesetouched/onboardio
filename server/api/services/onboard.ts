@@ -1,3 +1,4 @@
+import e = require("express");
 import * as fetch from "node-fetch";
 import { URLSearchParams } from "url";
 
@@ -26,6 +27,12 @@ function sendAsanaInvite(email, gid, token) {
       .then((response) => {
         if (response.data.email == email)
           resolve({ service: "Asana", status: true });
+        else
+          reject({
+            service: "Asana",
+            code: 500,
+            message: "Couldn't invite to Asana",
+          });
       });
   });
 }
@@ -55,6 +62,12 @@ function sendHerokuInvite(email, team, token) {
       })
       .then((response) => {
         if (response) resolve({ service: "Heroku", status: true });
+        else
+          reject({
+            service: "Heroku",
+            code: 500,
+            message: "Couldn't invite to Heroku",
+          });
       });
   });
 }
@@ -71,7 +84,6 @@ function sendGitHubInvite(email, team, token) {
       }),
     })
       .then(async (res) => {
-        console.log(await res.json());
         if (res.status == 200) return res.json();
         else
           reject({
@@ -82,6 +94,56 @@ function sendGitHubInvite(email, team, token) {
       })
       .then((response) => {
         if (response) resolve({ service: "GitHub", status: true });
+        else
+          reject({
+            service: "GitHub",
+            code: 500,
+            message: "Couldn't invite to GitHub",
+          });
+      });
+  });
+}
+
+function sendZohoInvite(email, role, profile, token) {
+  let body = {
+    users: [
+      {
+        role: role,
+        first_name: "Change",
+        email: email,
+        profile: profile,
+        last_name: "This",
+      },
+    ],
+  };
+
+  return new Promise((resolve, reject) => {
+    fetch(`https://www.zohoapis.in/crm/v2/users`, {
+      method: "post",
+      headers: {
+        Authorization: `Zoho-oauthtoken ${token}`,
+      },
+      body: JSON.stringify(body),
+    })
+      .then((res) => {
+        if (res.status == 200) return res.json();
+        else
+          reject({
+            service: "Zoho",
+            code: 500,
+            message: "Couldn't invite to Zoho",
+          });
+      })
+      .then((response) => {
+        if (response.users[0].code == "SUCCESS")
+          resolve({ service: "Zoho", status: true });
+        else
+          reject({
+            service: "Zoho",
+            code: 500,
+            message: "Couldn't invite to Zoho",
+            error: response.users[0].message,
+          });
       });
   });
 }
@@ -112,20 +174,31 @@ export class OnboardService {
                   service.token
                 )
               );
-              if (service.name == "GitHub")
-                promiseArray.push(
-                  sendGitHubInvite(
-                    email,
-                    selectedFlow.meta.github.organizations[0].label,
-                    service.token
-                  )
-                );
+            }
+            if (service.name == "GitHub") {
+              promiseArray.push(
+                sendGitHubInvite(
+                  email,
+                  selectedFlow.meta.github.organizations[0].label,
+                  service.token
+                )
+              );
             }
             if (service.name == "Asana") {
               promiseArray.push(
                 sendAsanaInvite(
                   email,
                   selectedFlow.meta.asana.workspaces[0].value,
+                  service.token
+                )
+              );
+            }
+            if (service.name == "Zoho") {
+              promiseArray.push(
+                sendZohoInvite(
+                  email,
+                  selectedFlow.meta.zoho.role.value,
+                  selectedFlow.meta.zoho.profile.value,
                   service.token
                 )
               );
