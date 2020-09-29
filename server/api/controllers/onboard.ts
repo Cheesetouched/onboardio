@@ -8,7 +8,7 @@ export class OnboardController {
 
     OnboardService.onboardUsers(flow, emails)
       .then((result) => {
-        return res.send({ status: "ONBOARDING_SUCESSFUL", report: result });
+        return res.send({ status: "ONBOARDING_SUCCESSFUL", report: result });
       })
       .catch((err) => {
         return res.status(500).send({ status: "FAILED_TO_ONBOARD" });
