@@ -5,59 +5,54 @@ const User = mongoose.model("User", UserModel);
 
 function sendAsanaInvite() {
   return new Promise((resolve, reject) => {
-    resolve({ asana: true });
+    resolve(true);
   });
 }
 
 function sendDiscordInvite() {
   return new Promise((resolve, reject) => {
-    reject({ discord: "403: Forbidden" });
+    reject("403: Forbidden");
   });
 }
 
 function sendGitHubInvite() {
   return new Promise((resolve, reject) => {
-    resolve({ github: true });
+    resolve(true);
   });
 }
 
 function sendHerokuInvite() {
   return new Promise((resolve, reject) => {
-    resolve({ heroku: true });
+    resolve(true);
   });
 }
 
 function sendZohoInvite() {
   return new Promise((resolve, reject) => {
-    reject({ zoho: "Access token expired" });
+    reject("Access token expired");
   });
 }
 
 export class OnboardService {
-  static onboardUsers(services: any, flow: any, emails: Array<string>) {
-    return new Promise(async (resolve) => {
+  static onboardUsers(flow: string, emails: Array<string>) {
+    return new Promise((resolve) => {
       let report = [];
-      let promiseArray = [];
-
-      flow.forEach((flow) => {
-        const flowService = flow.service;
-        services.forEach((service) => {
-          if (flowService == service.id) {
-            if (service.name == "Asana") promiseArray.push(sendAsanaInvite());
-            if (service.name == "Discord")
-              promiseArray.push(sendDiscordInvite());
-            if (service.name == "GitHub") promiseArray.push(sendGitHubInvite());
-            if (service.name == "Heroku") promiseArray.push(sendHerokuInvite());
-            if (service.name == "Zoho") promiseArray.push(sendZohoInvite());
-          }
-        });
-      });
-
       emails.forEach((email, index) => {
+        let promiseArray = [
+          sendAsanaInvite(),
+          sendDiscordInvite(),
+          sendGitHubInvite(),
+          sendHerokuInvite(),
+          sendZohoInvite(),
+        ];
         Promise.allSettled(promiseArray).then((result) => {
           report.push({
             email: email,
-            result: result,
+            asana: result[0],
+            discord: result[1],
+            github: result[2],
+            heroku: result[3],
+            zoho: result[4],
           });
           if (index == emails.length - 1) resolve(report);
         });
