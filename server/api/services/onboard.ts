@@ -1,11 +1,22 @@
 import * as mongoose from "mongoose";
 import { UserModel } from "../models/user";
+import asana from "asana";
 
 const User = mongoose.model("User", UserModel);
 
 function sendAsanaInvite() {
   return new Promise((resolve, reject) => {
-    resolve({ asana: true });
+    const client = asana.Client.create().useAccessToken(
+      "PERSONAL_ACCESS_TOKEN"
+    );
+    client.workspaces
+      .addUserForWorkspace(workspaceGid, { data: { email: email } })
+      .then(resolve({ asana: true }))
+      .then((response) => {
+        if (response.error)
+          reject({ code: 500, message: response.error_description });
+        else resolve(response.access_token);
+      });
   });
 }
 
@@ -42,7 +53,10 @@ export class OnboardService {
       flow.services.forEach((flowService) => {
         services.forEach((service) => {
           if (flowService == service.id) {
-            if (service.name == "Asana") promiseArray.push(sendAsanaInvite());
+            if (service.name == "Asana")
+              promiseArray.push(
+                sendAsanaInvite(flow.meta, emails, service.token)
+              );
             if (service.name == "Discord")
               promiseArray.push(sendDiscordInvite());
             if (service.name == "GitHub") promiseArray.push(sendGitHubInvite());
