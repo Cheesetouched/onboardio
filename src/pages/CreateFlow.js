@@ -21,7 +21,7 @@ import {
 } from "../utils/helpers";
 import {
     fetchAllAsanaWorkspaces,
-    fetchAllHerokuTeams,
+    fetchAllHerokuTeams, fetchAllZohoProfilesAndRoles,
     fetchAvailableGithubOrganizations
 } from "../services/serviceProviders";
 import {getAsanaWorkspacesList, getGithubOrganizationsList, getHerokuTeamsList} from "../redux/stateUtils/services";
@@ -31,6 +31,7 @@ const FORMS = {
     CREATE_FLOW_FORM: "CREATE_FLOW_FORM",
     GITHUB_USER_INPUT_FORM: "GITHUB_USER_INPUT_FORM",
     ASANA_USER_INPUT_FORM: "ASANA_USER_INPUT_FORM",
+    ZOHO_USER_INPUT_FORM: "ZOHO_USER_INPUT_FORM",
     DISCORD_USER_INPUT_FORM: "DISCORD_USER_INPUT_FORM",
     HEROKU_USER_INPUT_FORM: "HEROKU_USER_INPUT_FORM"
 };
@@ -39,7 +40,8 @@ const SERVICE_FORM_MAP = {
     "github": FORMS.GITHUB_USER_INPUT_FORM,
     "asana": FORMS.ASANA_USER_INPUT_FORM,
     "discord": FORMS.DISCORD_USER_INPUT_FORM,
-    "heroku": FORMS.HEROKU_USER_INPUT_FORM
+    "heroku": FORMS.HEROKU_USER_INPUT_FORM,
+    "zoho": FORMS.ZOHO_USER_INPUT_FORM
 };
 
 const ServiceInputForm = (props) => {
@@ -70,6 +72,8 @@ const ServiceInputForm = (props) => {
                 break;
             case FORMS.DISCORD_USER_INPUT_FORM:
                 break;
+            case FORMS.ZOHO_USER_INPUT_FORM:
+                break;
             case FORMS.HEROKU_USER_INPUT_FORM:
                 if(!(servicesInputs["heroku"].teams && servicesInputs["heroku"].teams.length)){
                     return setState({...state, error: "Please select at least one team to continue"});
@@ -93,6 +97,9 @@ const ServiceInputForm = (props) => {
                 break;
             case FORMS.HEROKU_USER_INPUT_FORM:
                 fetchAllHerokuTeams();
+                break;
+            case FORMS.ASANA_USER_INPUT_FORM:
+                fetchAllZohoProfilesAndRoles();
                 break;
         }
     }, [formType]);
@@ -154,6 +161,31 @@ const ServiceInputForm = (props) => {
                             values={servicesInputs["asana"] ? servicesInputs["asana"]["workspaces"] : []}
                             options={asanaWorkspacesOptions}
                             placeholder={"Select your workspaces"}
+                        />
+                    </FormControl>
+                </>
+            )
+            break;
+        case FORMS.ZOHO_USER_INPUT_FORM:
+            const herokuTeamsOptions = herokuTeams.map(team => {
+                return {label: team.name, value: team.id}
+            });
+
+            const handleHerokuTeamSelectionChange = (values) => {
+                updateServiceInputsCallback("heroku", {teams: values});
+            }
+
+            renderedServiceForm = (
+                <>
+                    <FormControl isRequired>
+                        <FormLabel mt={4} mb={2}>
+                            Select your Heroku Teams
+                        </FormLabel>
+                        <MultiSelect
+                            onChange={handleHerokuTeamSelectionChange}
+                            values={servicesInputs["heroku"] ? servicesInputs["heroku"]["teams"] : []}
+                            options={herokuTeamsOptions}
+                            placeholder={"Select your teams"}
                         />
                     </FormControl>
                 </>

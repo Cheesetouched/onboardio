@@ -1,4 +1,9 @@
-import {setAsanaWorkspacesList, setGithubOrganizationList, setHerokuTeamsList} from "../redux/actions/services";
+import {
+    setAsanaWorkspacesList,
+    setGithubOrganizationList,
+    setHerokuTeamsList,
+    setZohoRolesList
+} from "../redux/actions/services";
 import {store} from "../redux/store";
 import axios from "axios";
 import {useSelector} from "react-redux";
@@ -67,4 +72,40 @@ export const fetchAllHerokuTeams = () => {
         store.dispatch(setHerokuTeamsList(filteredTeams));
         return teams;
     })
+}
+
+export const fetchAllZohoProfilesAndRoles = () => {
+    const zohoLinkedService = getConnectedServices(store.getState()).find((service)=>{
+        return service.name.toLowerCase() === "zoho"
+    });
+
+    const getRolesPromise = axios({
+        url: "https://www.zohoapis.in/crm/v2/settings/roles",
+        method: "get",
+        headers: {
+            Authorization: `Bearer ${zohoLinkedService.token}`
+        }
+    }).then((response)=>{
+        const {roles} = response.data;
+
+        setZohoRolesList(roles);
+
+        return roles;
+    });
+
+    const getProfilesPromise = axios({
+        url: "https://www.zohoapis.com/crm/v2/settings/profiles",
+        method: "get",
+        headers: {
+            Authorization: `Bearer ${zohoLinkedService.token}`
+        }
+    }).then((response)=>{
+        const {profiles} = response.data;
+
+        setZohoRolesList(profiles);
+
+        return profiles;
+    });
+
+    return Promise.all([getRolesPromise, getProfilesPromise]);
 }
