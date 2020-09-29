@@ -33,11 +33,11 @@ const Onboard = (props) => {
     getFlow()
       .then((response) => {
         let data = [];
-        response = response.data;
-        response.forEach((e) =>
+        const flowsArr = response.data;
+        flowsArr.forEach((service) =>
           data.push({
-            label: e.name,
-            value: e._id,
+            label: service.name,
+            value: service._id,
           })
         );
         setState((state) => ({
