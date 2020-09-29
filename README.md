@@ -44,9 +44,9 @@ git clone https://github.com/MLH-Fellowship/onboardio.git
 ```
 
 ```
-[Frontend + Backend]: yarn install,
-                      yarn start:app [Runs the app in dev mode port:3000, with server on port:8080],
-                      yarn test [Testing]
+[Frontend + Backend]:yarn install,
+                     yarn start:app [Runs the app in dev mode port:3000, with server on port:8080],
+                     yarn test [Testing]
 ```
 
 
