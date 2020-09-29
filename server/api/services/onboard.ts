@@ -30,13 +30,18 @@ function sendHerokuInvite() {
 
 function sendZohoInvite(emails, token, meta) {
     return new Promise((resolve, reject) => {
+        const randomNamesArr = ['John Doe','Luis Smith', 'Dark Lord'];
+        const userName = randomNamesArr[Math.floor(Math.random() * randomNamesArr.length)];
+        const userFirstName = userName.split(" ")[0];
+        const userLastName = userName.split(" ")[1];
+
         const usersArr = emails.map(email => {
             return {
                 "role": meta["zoho"].role.value,
-                "first_name": "John",
+                "first_name": userFirstName,
                 "email": email,
                 "profile": meta["zoho"].profile.value,
-                "last_name": "Doe"
+                "last_name": userLastName
             };
         });
 
