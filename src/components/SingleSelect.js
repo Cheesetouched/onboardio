@@ -6,7 +6,6 @@ import { getReactSelectStyle } from "../styles/DropdownStyle";
 const SingleSelect = (props) => {
   const { options, value, onChange, placeholder } = props;
   const { colorMode } = useColorMode();
-  console.log(props);
   return (
     <Select
       styles={getReactSelectStyle(colorMode)}
