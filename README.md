@@ -8,14 +8,12 @@ Onboard.io helps admins and management teams quickly onboard their new hires. Lo
 
 ### Currently Supported Services
 
-
 1. Github
 2. Asana
 3. Heroku
-
+4. Zoho
 
 ### Next-Phase Supported Services
-
 
 1. Jira
 2. Zoom
@@ -23,9 +21,7 @@ Onboard.io helps admins and management teams quickly onboard their new hires. Lo
 4. Trello
 5. Digital Ocean
 6. Slack
-7. Zoho
-8. Discord
-
+7. Discord
 
 ### How It Was Built
 
@@ -49,16 +45,13 @@ git clone https://github.com/MLH-Fellowship/onboardio.git
                      yarn test [Testing]
 ```
 
-
 ### Next Phase Of Onboard.io
 
 1. Add Additional Onboarding Services as stated above.
 2. Implementation of easy offboarding employees.
 3. Implementation of Videos Upload to help Product Managers Explain Products to new Employee Via Video
 
-
 ### Challenges we ran into
-
 
 Each service has its own flavor of OAuth authentication, so figuring out a communal endpoint
 design to serve them all was challenging, as well as quite engaging. At certain points
@@ -69,6 +62,5 @@ We also had to deal with a lot of API calls to and from a lot of different servi
 so that was also quite a challenging task.
 If a new service we added required an extra parameter,the entire flow structure had
 to be modified to accommodate the new parameter.
-
 
 ### With Onboard.io, Revamping How Organizations Onboard!:+1::sparkling_heart:
