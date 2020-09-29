@@ -21,16 +21,23 @@ import {
 } from "../utils/helpers";
 import {
     fetchAllAsanaWorkspaces,
-    fetchAllHerokuTeams,
+    fetchAllHerokuTeams, fetchAllZohoProfilesAndRoles,
     fetchAvailableGithubOrganizations
 } from "../services/serviceProviders";
-import {getAsanaWorkspacesList, getGithubOrganizationsList, getHerokuTeamsList} from "../redux/stateUtils/services";
+import {
+    getAsanaWorkspacesList,
+    getGithubOrganizationsList,
+    getHerokuTeamsList, getZohoProfilesList,
+    getZohoRolesList
+} from "../redux/stateUtils/services";
 import {withRouter} from "react-router-dom";
+import {SingleSelect} from "../components/SingleSelect";
 
 const FORMS = {
     CREATE_FLOW_FORM: "CREATE_FLOW_FORM",
     GITHUB_USER_INPUT_FORM: "GITHUB_USER_INPUT_FORM",
     ASANA_USER_INPUT_FORM: "ASANA_USER_INPUT_FORM",
+    ZOHO_USER_INPUT_FORM: "ZOHO_USER_INPUT_FORM",
     DISCORD_USER_INPUT_FORM: "DISCORD_USER_INPUT_FORM",
     HEROKU_USER_INPUT_FORM: "HEROKU_USER_INPUT_FORM"
 };
@@ -39,7 +46,8 @@ const SERVICE_FORM_MAP = {
     "github": FORMS.GITHUB_USER_INPUT_FORM,
     "asana": FORMS.ASANA_USER_INPUT_FORM,
     "discord": FORMS.DISCORD_USER_INPUT_FORM,
-    "heroku": FORMS.HEROKU_USER_INPUT_FORM
+    "heroku": FORMS.HEROKU_USER_INPUT_FORM,
+    "zoho": FORMS.ZOHO_USER_INPUT_FORM
 };
 
 const ServiceInputForm = (props) => {
@@ -52,6 +60,8 @@ const ServiceInputForm = (props) => {
     const githubOrganizations = useSelector(getGithubOrganizationsList);
     const asanaWorkspaces = useSelector(getAsanaWorkspacesList);
     const herokuTeams = useSelector(getHerokuTeamsList);
+    const zohoRoles = useSelector(getZohoRolesList);
+    const zohoProfiles = useSelector(getZohoProfilesList);
 
     const {error, isLoading} = state;
 
@@ -69,6 +79,12 @@ const ServiceInputForm = (props) => {
                 }
                 break;
             case FORMS.DISCORD_USER_INPUT_FORM:
+
+                break;
+            case FORMS.ZOHO_USER_INPUT_FORM:
+                if(!(servicesInputs["zoho"].role && servicesInputs["zoho"].profile)){
+                    return setState({...state, error: "Please select both the inputs"});
+                }
                 break;
             case FORMS.HEROKU_USER_INPUT_FORM:
                 if(!(servicesInputs["heroku"].teams && servicesInputs["heroku"].teams.length)){
@@ -93,6 +109,9 @@ const ServiceInputForm = (props) => {
                 break;
             case FORMS.HEROKU_USER_INPUT_FORM:
                 fetchAllHerokuTeams();
+                break;
+            case FORMS.ZOHO_USER_INPUT_FORM:
+                fetchAllZohoProfilesAndRoles();
                 break;
         }
     }, [formType]);
@@ -154,6 +173,51 @@ const ServiceInputForm = (props) => {
                             values={servicesInputs["asana"] ? servicesInputs["asana"]["workspaces"] : []}
                             options={asanaWorkspacesOptions}
                             placeholder={"Select your workspaces"}
+                        />
+                    </FormControl>
+                </>
+            )
+            break;
+        case FORMS.ZOHO_USER_INPUT_FORM:
+            const zohoProfilesOptions = zohoProfiles.map(profile => {
+                return {label: profile.display_label, value: profile.id}
+            });
+
+            const zohoRolesOptions = zohoRoles.map(role => {
+                const label = `${role.display_label}${role.admin_user ? `(admin)` : " "}`
+                return {label: label, value: role.id}
+            });
+
+            const handleZohoProfileChange = (value) => {
+                updateServiceInputsCallback("zoho", {profile: value});
+            }
+
+            const handleZohoRoleChange = (value) => {
+                updateServiceInputsCallback("zoho", {role: value});
+            }
+
+            renderedServiceForm = (
+                <>
+                    <FormControl isRequired>
+                        <FormLabel mt={4} mb={2}>
+                            Select your Zoho Profile
+                        </FormLabel>
+                        <SingleSelect
+                            onChange={handleZohoProfileChange}
+                            values={servicesInputs["zoho"] ? servicesInputs["zoho"]["profile"] : null}
+                            options={zohoProfilesOptions}
+                            placeholder={"Select your profile"}
+                        />
+                    </FormControl>
+                    <FormControl isRequired>
+                        <FormLabel mt={4} mb={2}>
+                            Select your Zoho Role
+                        </FormLabel>
+                        <SingleSelect
+                            onChange={handleZohoRoleChange}
+                            values={servicesInputs["zoho"] ? servicesInputs["zoho"]["role"] : null}
+                            options={zohoRolesOptions}
+                            placeholder={"Select your role"}
                         />
                     </FormControl>
                 </>

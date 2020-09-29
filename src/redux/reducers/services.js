@@ -1,4 +1,9 @@
-import {SET_ASANA_WORKSPACES_LIST, SET_GITHUB_ORGANIZATIONS_LIST, SET_HEROKU_TEAMS_LIST} from "../actions/services";
+import {
+    SET_ASANA_WORKSPACES_LIST,
+    SET_GITHUB_ORGANIZATIONS_LIST,
+    SET_HEROKU_TEAMS_LIST, SET_ZOHO_PROFILES_LIST,
+    SET_ZOHO_ROLES_LIST
+} from "../actions/services";
 
 const initialState = {
     github: {
@@ -9,8 +14,11 @@ const initialState = {
     },
     heroku: {
         teams: []
+    },
+    zoho: {
+        profiles: [],
+        roles: []
     }
-
 };
 
 const services = (state = initialState, action) => {
@@ -35,8 +43,24 @@ const services = (state = initialState, action) => {
             return {
                 ...state,
                 heroku: {
-                    ...state.asana,
+                    ...state.heroku,
                     teams: action.teams
+                }
+            }
+        case SET_ZOHO_ROLES_LIST:
+            return {
+                ...state,
+                zoho: {
+                    ...state.zoho,
+                    roles: action.roles
+                }
+            }
+        case SET_ZOHO_PROFILES_LIST:
+            return {
+                ...state,
+                zoho: {
+                    ...state.zoho,
+                    profiles: action.profiles
                 }
             }
         default:
