@@ -1,6 +1,35 @@
 import * as fetch from "node-fetch";
 import { URLSearchParams } from "url";
 
+function sendAsanaInvite(email, gid, token) {
+  let body = {
+    data: {
+      user: email,
+    },
+  };
+
+  return new Promise((resolve, reject) => {
+    fetch(`https://app.asana.com/api/1.0/workspaces/${gid}/addUser`, {
+      method: "post",
+      headers: { Authorization: `Bearer ${token}` },
+      body: JSON.stringify(body),
+    })
+      .then((res) => {
+        if (res.status == 200) return res.json();
+        else
+          reject({
+            service: "Asana",
+            code: 500,
+            message: "Couldn't invite to Asana",
+          });
+      })
+      .then((response) => {
+        if (response.data.email == email)
+          resolve({ service: "Asana", status: true });
+      });
+  });
+}
+
 function sendHerokuInvite(email, team, token) {
   return new Promise((resolve, reject) => {
     const params = new URLSearchParams();
@@ -48,7 +77,7 @@ export class OnboardService {
       selectedFlow.services.forEach((selectedService) => {
         services.forEach((service) => {
           if (selectedService.toString() == service._id.toString()) {
-            if (service.name == "Heroku")
+            if (service.name == "Heroku") {
               promiseArray.push(
                 sendHerokuInvite(
                   email,
@@ -56,6 +85,16 @@ export class OnboardService {
                   service.token
                 )
               );
+            }
+            if (service.name == "Asana") {
+              promiseArray.push(
+                sendAsanaInvite(
+                  email,
+                  selectedFlow.meta.asana.workspaces[0].value,
+                  service.token
+                )
+              );
+            }
           }
         });
       });
