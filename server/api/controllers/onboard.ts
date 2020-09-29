@@ -4,10 +4,9 @@ import { UserInfoRequest } from "../middlewares/strictlyAuthorizedRoutes";
 
 export class OnboardController {
   public onboardUsers(req: UserInfoRequest, res: Response) {
-    const { flow, emails } = req.body;
-
+    const { flowId, emails } = req.body;
     req.userInfo.flows.forEach((theflow) => {
-      if (flow == theflow._id) {
+      if (flowId.value == theflow._id) {
         OnboardService.onboardUsers(req.userInfo.services, theflow, emails)
           .then((result) => {
             return res.send({

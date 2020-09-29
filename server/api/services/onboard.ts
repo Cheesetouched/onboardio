@@ -89,6 +89,7 @@ export class OnboardService {
                         email: email,
                         result: result,
                     });
+                    console.log("Something is going on", result, email);
                     if (index == emails.length - 1) resolve(report);
                 });
             });
