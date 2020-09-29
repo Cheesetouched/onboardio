@@ -9,6 +9,6 @@
     "baseUrl": "./api",
     "lib": ["ES2020.Promise"]
   },
-  "include": ["api/**/*.ts"],
+  "include": ["api/*/.ts"],
   "exclude": ["node_modules"]
 }
