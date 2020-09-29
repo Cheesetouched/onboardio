@@ -39,7 +39,8 @@ export class OnboardService {
       let report = [];
       let promiseArray = [];
 
-      flow.services.forEach((flowService) => {
+      flow.forEach((flow) => {
+        const flowService = flow.service;
         services.forEach((service) => {
           if (flowService == service.id) {
             if (service.name == "Asana") promiseArray.push(sendAsanaInvite());
