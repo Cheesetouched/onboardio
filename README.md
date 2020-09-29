@@ -6,7 +6,7 @@
 
 Onboard.io helps admins and management teams quickly onboard their new hires. Long gone are the days where you had to visit each platform and send invites to your newest team members. Onboard.io handles this tedious task for you, just enter the email and choose one of the pre-designed flows, and you’re done. Email invites from each of the selected platforms will be sent out automatically!
 
-### Currently Supported Services.
+### Currently Supported Services
 
 
 1. Github
@@ -14,7 +14,7 @@ Onboard.io helps admins and management teams quickly onboard their new hires. Lo
 3. Heroku
 
 
-### Next Phase Supported Services
+### Next-Phase Supported Services
 
 
 1. Jira
@@ -37,7 +37,7 @@ React (Frontend).
 Node[typescript+express] (Backend).
 Heroku (Deployment).
 
-### HOW TO SETUP:
+### Setup
 
 ```
 git clone https://github.com/MLH-Fellowship/onboardio.git
