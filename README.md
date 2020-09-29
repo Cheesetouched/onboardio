@@ -1,68 +1,59 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Onboard.io :rocket: :checkered_flag:
+![Test Image 4](https://github.com/MLH-Fellowship/onboardio/blob/master/onboardio.jpg)
 
-## Available Scripts
+## Introduction 
 
-In the project directory, you can run:
+Onboard.io helps admins and management teams quickly onboard their new hires. Long gone are the days where you had to visit each platform and send invites to your newest team members. Onboard.io handles this tedious task for you, just enter the email and choose one of the pre-designed flows, and you’re done. Email invites from each of the selected platforms will be sent out automatically!
 
-### `yarn start`
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Currently Supported Services.
+```
+1. Github   2. Zoho   3. Discord   4. Asana   5. Heroku
+```
+### Next Phase Supported Services
+```
+1. Jira   2. Zoom   3. Bitbucket   4. Trello   5. Digital Ocean  6. Slack
+```
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+### How It Was Built
+Onboard.io uses a React frontend paired with redux for state management. The backend is a typescript+express web server. We use OAuth 2.0 for all our API connection needs.
 
-### `yarn test`
+### Stack Used
+React (Frontend).
+Node[typescript+express] (Backend)
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### HOW TO SETUP:
 
-### `yarn build`
+```
+git clone https://github.com/MLH-Fellowship/onboardio.git
+```
+```
+[Frontend]: yarn install, yarn start [Runs the app in dev mode port:3000], yarn test [Testing]
+```
+```
+cd server [Backend]:  yarn install, yarn start [Runs the app in dev mode port:8000] 
+```
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Next Phase Of Onboard.io
+```
+1. Add Additional Onboarding Services as stated above.
+2. Implementation of easy offboarding employees.
+3. Implementation of Videos Upload to help Product Managers Explain Products to new Employee Via Video
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Challenges we ran into
+```
+Each service has its own flavor of OAuth authentication, so figuring out a communal endpoint
+design to serve them all was challenging, as well as quite engaging. At certain points
+during the development, we had to gather the entire team, hop onto a voice channel,
+and work out a solution - fast! A ticking clock meant we always had to be on our toes, 
+which was quite demanding.
+We also had to deal with a lot of API calls to and from a lot of different service providers,
+so that was also quite a challenging task.
+If a new service we added required an extra parameter,the entire flow structure had
+to be modified to accommodate the new parameter.
 
-### `yarn eject`
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+### With Onboard.io, Revamping How Organizations Onboard!:+1::sparkling_heart:	
