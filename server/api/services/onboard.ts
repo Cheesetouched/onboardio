@@ -1,4 +1,6 @@
+import * as fetch from "node-fetch";
 import * as mongoose from "mongoose";
+import { URLSearchParams } from "url";
 import { UserModel } from "../models/user";
 
 const User = mongoose.model("User", UserModel);
@@ -21,9 +23,24 @@ function sendGitHubInvite() {
   });
 }
 
-function sendHerokuInvite() {
+function sendHerokuInvite(herokuToken, email, team) {
   return new Promise((resolve, reject) => {
-    resolve({ heroku: true });
+    const params = new URLSearchParams();
+    params.append("email", email);
+    params.append("role", "member");
+    fetch(`https://api.heroku.com/teams/${team}/invitations`, {
+      method: "put",
+      headers: {
+        Accept: "application/vnd.heroku+json; version=3",
+        Authorization: `Bearer ${herokuToken}`,
+      },
+      body: params,
+    })
+      .then((res) => res.json())
+      .then((response) => {
+        console.log(response);
+        resolve({ heroku: true });
+      });
   });
 }
 
@@ -34,33 +51,37 @@ function sendZohoInvite() {
 }
 
 export class OnboardService {
-  static onboardUsers(services: any, flow: any, emails: Array<string>) {
+  static onboardUsers(services: any, flows: any, emails: string) {
     return new Promise(async (resolve) => {
       let report = [];
       let promiseArray = [];
 
-      flow.forEach((flow) => {
-        const flowService = flow.service;
+      flows.services.forEach((flow) => {
         services.forEach((service) => {
-          if (flowService == service.id) {
+          if (flow == service.id) {
             if (service.name == "Asana") promiseArray.push(sendAsanaInvite());
             if (service.name == "Discord")
               promiseArray.push(sendDiscordInvite());
             if (service.name == "GitHub") promiseArray.push(sendGitHubInvite());
-            if (service.name == "Heroku") promiseArray.push(sendHerokuInvite());
+            if (service.name == "Heroku")
+              promiseArray.push(
+                sendHerokuInvite(
+                  service.token,
+                  emails,
+                  flows.meta.heroku.teams[0].label
+                )
+              );
             if (service.name == "Zoho") promiseArray.push(sendZohoInvite());
           }
         });
       });
 
-      emails.forEach((email, index) => {
-        Promise.allSettled(promiseArray).then((result) => {
-          report.push({
-            email: email,
-            result: result,
-          });
-          if (index == emails.length - 1) resolve(report);
+      Promise.allSettled(promiseArray).then((result) => {
+        report.push({
+          email: emails,
+          result: result,
         });
+        resolve(report);
       });
     });
   }
