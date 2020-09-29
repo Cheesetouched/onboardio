@@ -1,8 +1,11 @@
 import React from "react";
+import axios from "axios";
 import { Flex, Box, Button, Heading } from "@chakra-ui/core";
 import { Link as ReactLink } from "react-router-dom";
 
 const Dashboard = () => {
+  const token = window.localStorage.getItem("token");
+  axios.defaults.headers["Authorization"] = token;
   return (
     <Flex
       width="full"
