@@ -32,10 +32,10 @@ function sendZohoInvite(emails, token, meta) {
     return new Promise((resolve, reject) => {
         const usersArr = emails.map(email => {
             return {
-                "role": meta["zoho"].role,
+                "role": meta["zoho"].role.value,
                 "first_name": "John",
                 "email": email,
-                "profile": meta["zoho"].profile,
+                "profile": meta["zoho"].profile.value,
                 "last_name": "Doe"
             };
         });
